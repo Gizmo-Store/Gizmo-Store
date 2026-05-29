@@ -88,9 +88,9 @@
     .logo-text{font-size:16px;font-weight:800;letter-spacing:-.5px;color:var(--c-text)}
     .logo-text em{color:var(--c-brand);font-style:normal}
     /* Search */
-    .hdr-search{flex:1;position:relative;max-width:420px}
+    .hdr-search{flex:1;position:relative}
     .hdr-search input{
-      width:100%;padding:9px 36px 9px 16px;
+      width:100%;padding:9px 36px 9px 38px;
       border-radius:50px;border:1.5px solid var(--c-border);
       background:var(--c-surf2);color:var(--c-text);
       font-family:inherit;font-size:13.5px;outline:none;
@@ -101,22 +101,16 @@
       border-color:var(--c-brand);background:var(--c-surface);
       box-shadow:0 0 0 3px rgba(185,28,28,.1);
     }
+    .hdr-search .s-ico{
+      position:absolute;left:13px;top:50%;transform:translateY(-50%);
+      font-size:15px;pointer-events:none;line-height:1;
+    }
     .hdr-search .x-btn{
       position:absolute;right:12px;top:50%;transform:translateY(-50%);
       font-size:17px;color:var(--c-muted);cursor:pointer;display:none;
       transition:color .2s;line-height:1;
     }
     .hdr-search .x-btn:hover{color:var(--c-brand)}
-    /* Nav icons */
-    .hdr-nav{display:flex;gap:6px;flex-shrink:0;margin-left:auto}
-    .nav-ico{
-      width:36px;height:36px;border-radius:9px;
-      border:1.5px solid var(--c-border);background:var(--c-surface);
-      color:var(--c-text);display:flex;align-items:center;justify-content:center;
-      font-size:16px;cursor:pointer;box-shadow:var(--sh-xs);
-      transition:all var(--t) var(--ease);
-    }
-    .nav-ico:hover{border-color:var(--c-brand);color:var(--c-brand);transform:translateY(-1px);box-shadow:var(--sh-sm)}
 
     /* ── Hero ── */
     .hero{
@@ -190,43 +184,24 @@
     .stat-num{font-size:22px;font-weight:800;letter-spacing:-1px;color:#fff}
     .stat-lbl{font-size:11px;color:rgba(255,255,255,.5);font-weight:500;margin-top:3px;letter-spacing:.3px;text-transform:uppercase}
 
-    /* ── Trust bar ── */
-    .trust-bar{background:var(--c-surface);border-bottom:1px solid var(--c-border)}
-    .trust-inner{
-      max-width:1100px;margin:auto;padding:0 20px;
-      height:52px;display:flex;align-items:center;justify-content:center;
-      gap:32px;overflow-x:auto;scrollbar-width:none;
-    }
-    .trust-inner::-webkit-scrollbar{display:none}
-    .trust-item{
-      display:flex;align-items:center;gap:7px;
-      font-size:12.5px;font-weight:600;color:var(--c-sub);
-      white-space:nowrap;flex-shrink:0;
-    }
-    .trust-item span:first-child{font-size:16px}
-
     /* ── Filter ── */
-    .filter-wrap{max-width:1100px;margin:28px auto 0;padding:0 20px}
-    .filter-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-    .chip-scroll{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;flex:1;padding-bottom:1px}
-    .chip-scroll::-webkit-scrollbar{display:none}
+    .filter-wrap{max-width:1100px;margin:24px auto 0;padding:0 16px}
+    .chip-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:8px;
+    }
     .chip{
-      flex-shrink:0;padding:7px 18px;border-radius:50px;
+      padding:9px 6px;border-radius:50px;
       border:1.5px solid var(--c-border);background:var(--c-surface);
-      color:var(--c-sub);font-size:13px;font-weight:600;
-      cursor:pointer;white-space:nowrap;box-shadow:var(--sh-xs);
+      color:var(--c-sub);font-size:clamp(11px,3vw,13px);font-weight:600;
+      cursor:pointer;text-align:center;white-space:nowrap;
+      overflow:hidden;text-overflow:ellipsis;
+      box-shadow:var(--sh-xs);
       transition:all var(--t) var(--ease);
     }
     .chip:hover{border-color:var(--c-brand);color:var(--c-brand)}
     .chip.on{background:var(--c-brand);border-color:var(--c-brand);color:#fff;box-shadow:0 3px 12px rgba(185,28,28,.3)}
-    .sort-sel{
-      padding:8px 14px;border-radius:50px;
-      border:1.5px solid var(--c-border);background:var(--c-surface);
-      color:var(--c-text);font-family:inherit;font-size:13px;font-weight:600;
-      outline:none;cursor:pointer;box-shadow:var(--sh-xs);
-      transition:border-color var(--t);flex-shrink:0;
-    }
-    .sort-sel:hover{border-color:var(--c-brand)}
 
     /* ── Section heading ── */
     .sec-head{
@@ -580,7 +555,7 @@
 <div class="announce" aria-label="Notice">
   <div class="announce-track">
     <span>⚡ ငွေစျေးအတက်အကျကြောင့် စျေးနှုန်းအပြောင်းအလဲရှိနိုင်ပါသည်</span>
-    <span>🚚 မန္တလေးတစ်ဝိုက် ဒေလီဗာရီ ဝန်ဆောင်မှု ရနိုင်ပါသည်</span>
+    <span>🚚 မြန်မာပြည်တစ်ဝိုက် Delivery ဝန်ဆောင်မှု ရနိုင်ပါသည်</span>
     <span>💎 Authentic Premium Products Only</span>
     <span>⚡ ငွေစျေးအတက်အကျကြောင့် စျေးနှုန်းအပြောင်းအလဲရှိနိုင်ပါသည်</span>
     <span>🚚 မန္တလေးတစ်ဝိုက် ဒေလီဗာရီ ဝန်ဆောင်မှု ရနိုင်ပါသည်</span>
@@ -596,11 +571,9 @@
       <span class="logo-text"><em>Gizmo</em> Store</span>
     </a>
     <div class="hdr-search">
-      <input id="searchBar" type="text" placeholder="Search products…" onkeyup="onSearch()" autocomplete="off" spellcheck="false">
+      <span class="s-ico">🔍</span>
+      <input id="searchBar" type="text" placeholder="Search…" onkeyup="onSearch()" autocomplete="off" spellcheck="false">
       <span class="x-btn" id="clearBtn" onclick="clearSearch()">&times;</span>
-    </div>
-    <div class="hdr-nav">
-      <button class="nav-ico" id="darkBtn" onclick="toggleDark()" title="Toggle theme">🌙</button>
     </div>
   </div>
 </header>
@@ -613,7 +586,7 @@
     <p>Authentic IT products, EDC tools, and mobile accessories — curated and delivered fast from Mandalay.</p>
     <div class="hero-btns">
       <button class="btn-hero-solid" onclick="document.querySelector('.filter-wrap').scrollIntoView({behavior:'smooth'})">Shop Now →</button>
-      <button class="btn-hero-ghost" onclick="openMod('track-modal')">📦 Track your Order</button>
+      <button class="btn-hero-ghost" onclick="openMod('track-modal')">📦 Track My Order</button>
     </div>
     <div class="hero-stats">
       <div class="stat"><div class="stat-num">100%</div><div class="stat-lbl">Authentic</div></div>
@@ -623,30 +596,12 @@
   </div>
 </section>
 
-<!-- ─── Trust bar ─── -->
-<div class="trust-bar">
-  <div class="trust-inner">
-    <div class="trust-item"><span>✅</span><span>Genuine Products</span></div>
-    <div class="trust-item"><span>🚚</span><span>Nationwide Delivery</span></div>
-    <div class="trust-item"><span>🔒</span><span>Secure Ordering</span></div>
-    <div class="trust-item"><span>📞</span><span>Dedicated Support</span></div>
-    <div class="trust-item"><span>↩️</span><span>Easy Returns</span></div>
-  </div>
-</div>
-
 <!-- ─── Filters ─── -->
 <div class="filter-wrap">
-  <div class="filter-row">
-    <div class="chip-scroll">
-      <div id="tab-all"         class="chip on" onclick="setTab('all',this)">All Products</div>
-      <div id="tab-accessories" class="chip"     onclick="setTab('accessories',this)">Accessories &amp; Gadgets</div>
-      <div id="tab-home"        class="chip"     onclick="setTab('home',this)">Home Appliances</div>
-    </div>
-    <select class="sort-sel" id="sortSel" onchange="sortCards()">
-      <option value="default">Default</option>
-      <option value="low">Price ↑</option>
-      <option value="high">Price ↓</option>
-    </select>
+  <div class="chip-grid">
+    <div id="tab-all"         class="chip on" onclick="setTab('all',this)">All</div>
+    <div id="tab-accessories" class="chip"     onclick="setTab('accessories',this)">Accessories &amp; Gadgets</div>
+    <div id="tab-home"        class="chip"     onclick="setTab('home',this)">Home Appliances</div>
   </div>
 </div>
 
@@ -821,10 +776,8 @@ document.addEventListener('DOMContentLoaded',()=>{
 ────────────────────────────────────────────── */
 function applyDark(on){
   document.body.classList.toggle('dark',on);
-  ['darkBtn','fabTheme'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el) el.textContent=on?'☀️':'🌙';
-  });
+  const ft=document.getElementById('fabTheme');
+  if(ft) ft.textContent=on?'☀️':'🌙';
 }
 function toggleDark(){
   const on=!document.body.classList.contains('dark');
@@ -905,7 +858,6 @@ function buildCards(products){
       </div>`;
     g.appendChild(el);
   });
-  document.getElementById('sortSel').value='default';
   setTab('all',document.getElementById('tab-all'));
 }
 function patchCards(products){
@@ -941,12 +893,7 @@ function applyFilter(q,isBrand){
   sortCards();
 }
 function sortCards(){
-  const v=document.getElementById('sortSel').value;
-  activeCards.sort((a,b)=>{
-    if(v==='low')  return priceOf(a.dataset.price)-priceOf(b.dataset.price);
-    if(v==='high') return priceOf(b.dataset.price)-priceOf(a.dataset.price);
-    return parseInt(a.dataset.idx)-parseInt(b.dataset.idx);
-  });
+  activeCards.sort((a,b)=>parseInt(a.dataset.idx)-parseInt(b.dataset.idx));
   const g=document.getElementById('productGrid');
   activeCards.forEach(c=>g.appendChild(c));
   displayLimit=PER;
