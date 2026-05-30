@@ -2,6 +2,14 @@
 <html lang="my">
 <head>
   <meta charset="UTF-8">
+
+<meta name="description" content="Gizmo Store Myanmar - Premium Tech, Gadgets and Accessories">
+<meta name="theme-color" content="#B91C1C">
+<meta property="og:title" content="Gizmo Store">
+<meta property="og:type" content="website">
+
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob: 'unsafe-inline' 'unsafe-eval';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Gizmo Store — Premium Tech</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -58,7 +66,7 @@
     img{display:block}
 
     /* ── Announcement ── */
-    .announce{
+    .announce{font-family:'DM Sans','Padauk',system-ui,sans-serif;
       background:var(--c-brand);color:#fff;
       font-size:12px;font-weight:600;letter-spacing:.3px;
       overflow:hidden;white-space:nowrap;padding:8px 0;
@@ -308,7 +316,7 @@
 
     .ft-brand .ft-logo{width:46px;height:46px;border-radius:12px;object-fit:cover;margin-bottom:14px;box-shadow:var(--sh-sm)}
     .ft-brand-name{font-size:18px;font-weight:800;letter-spacing:-.4px;color:var(--c-brand);margin-bottom:10px}
-    .ft-brand-desc{font-size:13px;color:var(--c-muted);line-height:1.75;max-width:300px;margin-bottom:18px}
+    .ft-brand-desc{font-size:13px;color:var(--c-sub);font-weight:500;line-height:1.75;max-width:300px;margin-bottom:18px}
     .ft-about-btn{
       display:inline-flex;align-items:center;gap:6px;
       padding:9px 20px;border-radius:50px;
@@ -515,7 +523,30 @@
     .tl-line{position:absolute;top:50%;left:50%;transform:translateY(-50%);width:100%;height:2px;background:var(--c-surf3);z-index:1}
     .tl-line.d{background:var(--c-brand)}
     .tl-line.m{background:linear-gradient(90deg,var(--c-brand),rgba(185,28,28,.2));background-size:200%;animation:fl 1.2s linear infinite}
-    @keyframes fl{to{background-position:-200% 0}}
+    
+@keyframes fl{to{background-position:-200% 0}}
+.tl-line.m{
+overflow:visible;
+position:absolute;
+}
+.tl-line.m::after{
+content:'➜';
+position:absolute;
+right:-10px;
+top:50%;
+transform:translateY(-50%);
+font-size:14px;
+font-weight:900;
+color:var(--c-brand);
+animation:arrowFlow 1.2s linear infinite;
+}
+@keyframes arrowFlow{
+0%{transform:translate(-20px,-50%);opacity:.2}
+50%{opacity:1}
+100%{transform:translate(20px,-50%);opacity:.2}
+}
+
+.tl-line.m::after{content:'➜';position:absolute;right:-6px;top:50%;transform:translateY(-50%);color:var(--c-brand);font-size:12px;font-weight:bold;}
     .tl-lbl{font-size:10px;font-weight:700;color:var(--c-sub);line-height:1.3}
 
     /* Toast */
@@ -530,7 +561,268 @@
       transition:transform .33s var(--ease),opacity .33s;
     }
     .tp.show{transform:translateY(0) scale(1);opacity:1}
-  </style>
+  
+html:focus-within{scroll-behavior:smooth}
+button:focus-visible,input:focus-visible{
+outline:2px solid var(--c-brand);
+outline-offset:2px;
+}
+.prd-card{will-change:transform}
+
+
+/* V3 Premium Enhancements */
+.hero{background:linear-gradient(135deg,#111827,#7F1D1D)}
+.prd-card{backdrop-filter:blur(8px)}
+.prd-card:hover{transform:translateY(-8px) scale(1.01)!important}
+.lm-btn,.btn-primary,.c-btn-buy{letter-spacing:.3px}
+.site-hdr{box-shadow:0 2px 12px rgba(0,0,0,.06)}
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-thumb{background:rgba(185,28,28,.4);border-radius:20px}
+
+
+/* ===== PROFESSIONAL STOREFRONT V4 ===== */
+:root{
+  --glass:rgba(255,255,255,.08);
+}
+.site-hdr{
+  box-shadow:0 10px 30px rgba(0,0,0,.08)!important;
+}
+.hero{
+  background:
+  radial-gradient(circle at top left,rgba(185,28,28,.45),transparent 40%),
+  radial-gradient(circle at bottom right,rgba(202,138,4,.18),transparent 35%),
+  linear-gradient(135deg,#0f172a,#111827,#7f1d1d)!important;
+}
+.hero h1{
+  text-shadow:0 4px 24px rgba(0,0,0,.25);
+}
+.prd-card{
+  border-radius:18px!important;
+  overflow:hidden;
+}
+.card-thumb img{
+  transition:transform .6s cubic-bezier(.16,1,.3,1)!important;
+}
+.prd-card:hover{
+  transform:translateY(-10px)!important;
+}
+.c-btn-buy,
+.btn-primary{
+  background:linear-gradient(135deg,#B91C1C,#991B1B)!important;
+}
+.chip{
+  backdrop-filter:blur(12px);
+}
+.modal-card{
+  box-shadow:0 30px 80px rgba(0,0,0,.25)!important;
+}
+.ft-brand-desc{
+  line-height:1.9!important;
+}
+.tl-line.m::after{
+  content:"➜";
+  position:absolute;
+  right:-8px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--c-brand);
+  font-weight:900;
+}
+html{
+  scrollbar-gutter:stable;
+}
+
+
+/* Website quality improvements */
+img{max-width:100%;height:auto}
+button,input{font-family:inherit}
+.modal-card{overscroll-behavior:contain}
+.prd-card img{loading:lazy}
+
+
+/* ===== V6 Enterprise Enhancements ===== */
+.tl-line.m{
+  position:absolute !important;
+  overflow:visible;
+  height:3px !important;
+  background:linear-gradient(90deg,#B91C1C,#EF4444,#B91C1C) !important;
+  background-size:200% 100%;
+  animation:flowLine 1.2s linear infinite;
+}
+@keyframes flowLine{
+  from{background-position:0 0}
+  to{background-position:200% 0}
+}
+.tl-line.m::after{
+  content:"➜➜";
+  position:absolute;
+  top:50%;
+  left:0;
+  transform:translateY(-50%);
+  color:#DC2626;
+  font-size:14px;
+  font-weight:900;
+  letter-spacing:-2px;
+  text-shadow:0 0 8px rgba(220,38,38,.45);
+  animation:travelArrow 1.4s linear infinite;
+}
+@keyframes travelArrow{
+  0%{left:0%;opacity:0}
+  10%{opacity:1}
+  100%{left:92%;opacity:0}
+}
+
+.prd-card{
+  contain:content;
+}
+.hero-btns button,
+.c-btn-buy,
+.btn-primary{
+  min-height:44px;
+}
+img{
+  decoding:auto;
+}
+
+
+/* ===== V7 Full Redesign Layer ===== */
+.hero{
+  position:relative;
+}
+.hero::after{
+  filter:blur(20px);
+}
+.prd-card{
+  border:1px solid rgba(185,28,28,.12)!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.08)!important;
+}
+.prd-card:hover{
+  box-shadow:0 20px 50px rgba(0,0,0,.16)!important;
+}
+.card-price{
+  font-size:17px!important;
+}
+.site-hdr{
+  backdrop-filter:blur(24px)!important;
+}
+.chip.on{
+  box-shadow:0 8px 24px rgba(185,28,28,.35)!important;
+}
+.fab{
+  backdrop-filter:blur(14px);
+}
+.tl-line.m::after{
+  content:"➜➜➜";
+  font-size:16px;
+  text-shadow:0 0 12px rgba(220,38,38,.8);
+}
+@keyframes travelArrow{
+  0%{left:-5%;opacity:0;transform:translateY(-50%) scale(.8)}
+  20%{opacity:1}
+  50%{transform:translateY(-50%) scale(1.15)}
+  100%{left:95%;opacity:0;transform:translateY(-50%) scale(.8)}
+}
+
+
+/* ===== V8 PRODUCTION BUILD ===== */
+html{scroll-behavior:smooth}
+img{max-width:100%;height:auto}
+.prd-card{
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.prd-card:hover{
+  transform:translateY(-12px);
+}
+.site-hdr{
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+.tl-line.m{
+  border-radius:999px;
+}
+.tl-line.m::after{
+  content:"➜➜➜";
+  filter:drop-shadow(0 0 10px rgba(220,38,38,.8));
+}
+.skeleton{
+  animation:pulse 1.5s infinite;
+}
+@keyframes pulse{
+  0%,100%{opacity:1}
+  50%{opacity:.5}
+}
+
+
+/* ===== V9 ENTERPRISE STOREFRONT ===== */
+:root{
+  --shadow-premium:0 20px 60px rgba(0,0,0,.12);
+}
+.prd-card{
+  box-shadow:var(--shadow-premium)!important;
+  border-radius:20px!important;
+}
+.prd-card:hover{
+  transform:translateY(-14px) scale(1.015)!important;
+}
+.site-hdr{
+  backdrop-filter:blur(20px);
+  background:rgba(255,255,255,.85)!important;
+}
+.hero{
+  min-height:clamp(420px,60vh,720px);
+}
+.tl-line.m::after{
+  content:"➜➜➜";
+  font-size:18px;
+  animation:enterpriseArrow 1.2s linear infinite;
+}
+@keyframes enterpriseArrow{
+  0%{left:-8%;opacity:0}
+  15%{opacity:1}
+  50%{transform:translateY(-50%) scale(1.2)}
+  100%{left:100%;opacity:0}
+}
+.prd-card img{
+  transition:transform .7s ease;
+}
+.prd-card:hover img{
+  transform:scale(1.08);
+}
+@media (max-width:768px){
+  .prd-card:hover{
+    transform:none!important;
+  }
+}
+
+
+/* ===== V10 PRODUCTION GRADE ===== */
+*,*::before,*::after{box-sizing:border-box}
+img{max-width:100%;height:auto}
+:focus-visible{outline:2px solid #b91c1c;outline-offset:2px}
+button,input,select,textarea{font:inherit}
+.prd-card{content-visibility:auto;contain-intrinsic-size:300px}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+
+</style>
+
+<meta property="og:description" content="Premium Tech & Gadgets Store in Myanmar">
+<meta name="robots" content="index,follow">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:site_name" content="Gizmo Store">
+<meta name="format-detection" content="telephone=no">
+
+
+<meta name="description" content="Gizmo Store Myanmar - Production Storefront">
+<meta property="og:title" content="Gizmo Store">
+<meta property="og:description" content="Premium gadgets and accessories">
+<meta name="twitter:card" content="summary_large_image">
+
 </head>
 <body>
 <div id="toast-area"></div>
@@ -539,8 +831,10 @@
   <div class="announce-track">
     <span>ငွေစျေးအတက်အကျကြောင့် စျေးနှုန်းအပြောင်းအလဲရှိနိုင်ပါသည်</span>
     <span>🚚 Myanmar fragrance delivery service available</span>
+    <span>Your destination for premium IT products, EDC tools, and mobile accessories</span>
     <span>ငွေစျေးအတက်အကျကြောင့် စျေးနှုန်းအပြောင်းအလဲရှိနိုင်ပါသည်</span>
     <span>🚚 Myanmar fragrance delivery service available</span>
+    <span>Your destination for premium IT products, EDC tools, and mobile accessories</span>
   </div>
 </div>
 
@@ -564,7 +858,7 @@
     <h1>Premium Tech &amp; Gadgets<br>for <em>Modern Life</em></h1>
     <p>Authentic IT products, EDC tools, and mobile accessories — curated and delivered fast from Mandalay.</p>
     <div class="hero-btns">
-      <button class="btn-hero-solid" onclick="openMod('track-modal')">📦 Track Your Order</button>
+      <button class="btn-hero-solid" onclick="openMod('track-modal')">📦 Track My Order</button>
     </div>
     <div class="hero-stats">
       <div class="stat"><div class="stat-num">100%</div><div class="stat-lbl">Authentic</div></div>
@@ -1044,5 +1338,50 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+ document.querySelectorAll('.prd-card img').forEach(img=>{
+   img.loading='lazy';
+ });
+});
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('a[target="_blank"]').forEach(a=>{
+    a.rel='noopener noreferrer';
+  });
+});
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  // passive listeners hint
+  const noop=()=>{};
+  window.addEventListener('touchstart', noop, {passive:true});
+});
+</script>
+
+
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"Store",
+ "name":"Gizmo Store"
+}
+</script>
+
+<script>
+window.addEventListener('error',e=>console.warn('Captured error:',e.message));
+document.addEventListener('DOMContentLoaded',()=>{
+ document.querySelectorAll('img').forEach(img=>{
+   if(!img.loading) img.loading='lazy';
+ });
+});
+</script>
+
 </body>
 </html>
