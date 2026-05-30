@@ -52,8 +52,9 @@
       -webkit-tap-highlight-color:transparent;
       transition:background var(--t) var(--ease),color var(--t) var(--ease);
       min-height:100vh;
+      min-height:100dvh; /* Advanced Mobile Viewport */
     }
-    body.locked{overflow:hidden;position:fixed;width:100%}
+    body.locked{overflow:hidden}
     img{display:block}
 
     /* ── Announcement ── */
@@ -85,8 +86,8 @@
       width:36px;height:36px;border-radius:10px;
       object-fit:cover;box-shadow:var(--sh-sm);
     }
-    .logo-text{font-size:16px;font-weight:800;letter-spacing:-.5px;color:var(--c-text)}
-    .logo-text em{color:var(--c-brand);font-style:normal}
+    .logo-text{font-size:16px;font-weight:800;letter-spacing:-.5px;color:var(--c-brand)}
+    
     /* Search */
     .hdr-search{flex:1;position:relative}
     .hdr-search input{
@@ -249,26 +250,9 @@
       width:100%;height:100%;object-fit:cover;
       transition:transform .45s var(--ease);cursor:pointer;
     }
-    .thumb-overlay{
-      position:absolute;inset:0;
-      display:flex;align-items:center;justify-content:center;
-      background:rgba(0,0,0,0);
-      transition:background .3s;
-    }
-    .thumb-overlay-ico{
-      width:38px;height:38px;border-radius:50%;
-      background:#fff;color:var(--c-brand);
-      display:flex;align-items:center;justify-content:center;
-      font-size:17px;box-shadow:var(--sh-md);
-      transform:scale(0);opacity:0;
-      transition:transform .3s var(--ease),opacity .3s;
-      cursor:pointer;
-    }
     @media(hover:hover){
       .prd-card:hover{transform:translateY(-5px);box-shadow:var(--sh-md);border-color:rgba(185,28,28,.15)}
       .prd-card:hover .card-thumb img{transform:scale(1.07)}
-      .prd-card:hover .thumb-overlay{background:rgba(0,0,0,.16)}
-      .prd-card:hover .thumb-overlay-ico{transform:scale(1);opacity:1}
     }
 
     .card-body{padding:12px 13px 14px;display:flex;flex-direction:column;flex:1;gap:3px}
@@ -551,42 +535,38 @@
 <body>
 <div id="toast-area"></div>
 
-<!-- ─── Announcement ─── -->
 <div class="announce" aria-label="Notice">
   <div class="announce-track">
-    <span>⚡ ငွေစျေးအတက်အကျကြောင့် စျေးနှုန်းအပြောင်းအလဲရှိနိုင်ပါသည်</span>
-    <span>🚚 မြန်မာပြည်တစ်ဝိုက် Delivery ဝန်ဆောင်မှု ရနိုင်ပါသည်</span>
-    <span>💎 Authentic Premium Products Only</span>
-    <span>⚡ ငွေစျေးအတက်အကျကြောင့် စျေးနှုန်းအပြောင်းအလဲရှိနိုင်ပါသည်</span>
-    <span>🚚 မန္တလေးတစ်ဝိုက် ဒေလီဗာရီ ဝန်ဆောင်မှု ရနိုင်ပါသည်</span>
-    <span>💎 Authentic Premium Products Only</span>
+    <span>ငွေစျေးအတက်အကျကြောင့် စျေးနှုန်းအပြောင်းအလဲရှိနိုင်ပါသည်</span>
+    <span>🚚 Myanmar fragrance delivery service available</span>
+    <span>Your destination for premium IT products, EDC tools, and mobile accessories</span>
+    <span>ငွေစျေးအတက်အကျကြောင့် စျေးနှုန်းအပြောင်းအလဲရှိနိုင်ပါသည်</span>
+    <span>🚚 Myanmar fragrance delivery service available</span>
+    <span>Your destination for premium IT products, EDC tools, and mobile accessories</span>
   </div>
 </div>
 
-<!-- ─── Header ─── -->
 <header class="site-hdr">
   <div class="hdr-row">
     <a class="logo" href="#">
       <img class="logo-mark" src="https://i.ibb.co/b5RvKdSQ/IMG-0619.jpg" alt="Gizmo">
-      <span class="logo-text"><em>Gizmo</em> Store</span>
+      <span class="logo-text">Gizmo Store</span>
     </a>
     <div class="hdr-search">
       <span class="s-ico">🔍</span>
-      <input id="searchBar" type="text" placeholder="Search…" onkeyup="onSearch()" autocomplete="off" spellcheck="false">
+      <input id="searchBar" type="text" placeholder="Search…" oninput="onSearch()" autocomplete="off" spellcheck="false">
       <span class="x-btn" id="clearBtn" onclick="clearSearch()">&times;</span>
     </div>
   </div>
 </header>
 
-<!-- ─── Hero ─── -->
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-pill"><span class="dot"></span> Now Shipping Across Myanmar</div>
     <h1>Premium Tech &amp; Gadgets<br>for <em>Modern Life</em></h1>
     <p>Authentic IT products, EDC tools, and mobile accessories — curated and delivered fast from Mandalay.</p>
     <div class="hero-btns">
-      <button class="btn-hero-solid" onclick="document.querySelector('.filter-wrap').scrollIntoView({behavior:'smooth'})">Shop Now →</button>
-      <button class="btn-hero-ghost" onclick="openMod('track-modal')">📦 Track My Order</button>
+      <button class="btn-hero-solid" onclick="openMod('track-modal')">📦 Track My Order</button>
     </div>
     <div class="hero-stats">
       <div class="stat"><div class="stat-num">100%</div><div class="stat-lbl">Authentic</div></div>
@@ -596,7 +576,6 @@
   </div>
 </section>
 
-<!-- ─── Filters ─── -->
 <div class="filter-wrap">
   <div class="chip-grid">
     <div id="tab-all"         class="chip on" onclick="setTab('all',this)">All</div>
@@ -605,13 +584,11 @@
   </div>
 </div>
 
-<!-- ─── Section head ─── -->
 <div class="sec-head">
   <h2>Products</h2>
   <small id="prod-count"></small>
 </div>
 
-<!-- ─── Grid ─── -->
 <div class="grid-area">
   <div class="prd-grid" id="productGrid">
     <div class="sk"><div class="sk-img-b sk-pulse sk-line"></div><div class="sk-body"><div class="sk-line sk-pulse" style="width:55%;height:11px"></div><div class="sk-line sk-pulse" style="width:80%;height:13px"></div><div class="sk-line sk-pulse" style="width:40%;height:13px"></div><div class="sk-btn-b sk-pulse"></div></div></div>
@@ -625,7 +602,6 @@
 </div>
 <div id="lm-wrap"><button class="lm-btn" onclick="loadMore()">Load More Products ↓</button></div>
 
-<!-- ─── Footer ─── -->
 <footer class="site-footer">
   <div class="ft-inner">
     <div class="ft-top">
@@ -646,10 +622,10 @@
       <div class="ft-col">
         <h4>Follow Us</h4>
         <div class="soc-row">
-          <button class="soc-btn" onclick="window.open('https://m.me/100067458529116','_blank')" title="Facebook">
+          <button class="soc-btn" onclick="window.open('https://m.me/100067458529116','_blank','noopener,noreferrer')" aria-label="Facebook">
             <svg viewBox="0 0 320 512" fill="#1877F2" xmlns="http://www.w3.org/2000/svg"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
           </button>
-          <button class="soc-btn" onclick="window.open('https://t.me/Alpakamyanmar','_blank')" title="Telegram">
+          <button class="soc-btn" onclick="window.open('https://t.me/Alpakamyanmar','_blank','noopener,noreferrer')" aria-label="Telegram">
             <svg viewBox="0 0 496 512" fill="#0088CC" xmlns="http://www.w3.org/2000/svg"><path d="M248 8C111 8 0 119 0 256S111 504 248 504 496 393 496 256 385 8 248 8zM363 176.7c-3.7 39.2-19.9 134.4-28.1 178.3-3.5 18.6-10.3 24.8-16.9 25.4-14.4 1.3-25.3-9.5-39.3-18.7-21.8-14.3-34.2-23.2-55.3-37.2-24.5-16.1-8.6-25 5.3-39.5 3.7-3.8 67.1-61.5 68.3-66.7 .2-.7 .3-3.1-1.2-4.4s-3.6-.8-5.1-.5q-3.3 .7-104.6 69.1-14.8 10.2-26.9 9.9c-8.9-.2-25.9-5-38.6-9.1-15.5-5-27.9-7.7-26.8-16.3q.8-6.7 18.5-13.7 108.4-47.2 144.6-62.3c68.9-28.6 83.2-33.6 92.5-33.8 2.1 0 6.6 .5 9.6 2.9a10.5 10.5 0 0 1 3.5 6.7A43.8 43.8 0 0 1 363 176.7z"/></svg>
           </button>
         </div>
@@ -665,20 +641,16 @@
   </div>
 </footer>
 
-<!-- ─── FABs ─── -->
 <div class="fab-group">
-  <button class="fab fab-up" id="fabUp" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
-  <button class="fab fab-theme" id="fabTheme" onclick="toggleDark()">🌙</button>
-  <button class="fab fab-msg" onclick="openContact('')">💬</button>
+  <button class="fab fab-up" id="fabUp" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll Top">↑</button>
+  <button class="fab fab-theme" id="fabTheme" onclick="toggleDark()" aria-label="Toggle Theme">🌙</button>
+  <button class="fab fab-msg" onclick="openContact('')" aria-label="Message Us">💬</button>
 </div>
 
-<!-- ─── Modals ─── -->
-
-<!-- About -->
 <div id="about-modal" class="modal" onclick="closeMod('about-modal')">
   <div class="modal-card modal-wide" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
-    <button class="modal-x" onclick="closeMod('about-modal')">&times;</button>
+    <button class="modal-x" onclick="closeMod('about-modal')" aria-label="Close">&times;</button>
     <div class="modal-title">About Gizmo Store</div>
     <div class="modal-divider"></div>
     <p style="font-size:14px;line-height:1.85;color:var(--c-sub)">
@@ -688,16 +660,14 @@
   </div>
 </div>
 
-<!-- Image viewer -->
 <div id="img-modal" class="modal" onclick="closeMod('img-modal')">
   <img id="modal-img" src="" alt="Product" onclick="event.stopPropagation()">
 </div>
 
-<!-- Details -->
 <div id="details-modal" class="modal" onclick="closeMod('details-modal')">
   <div class="modal-card" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
-    <button class="modal-x" onclick="closeMod('details-modal')">&times;</button>
+    <button class="modal-x" onclick="closeMod('details-modal')" aria-label="Close">&times;</button>
     <div class="modal-title" id="d-name"></div>
     <div class="det-price" id="d-price"></div>
     <div class="det-desc" id="d-desc"></div>
@@ -705,11 +675,10 @@
   </div>
 </div>
 
-<!-- Order / Contact -->
 <div id="contact-modal" class="modal" onclick="closeMod('contact-modal')">
   <div class="modal-card" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
-    <button class="modal-x" onclick="closeMod('contact-modal')">&times;</button>
+    <button class="modal-x" onclick="closeMod('contact-modal')" aria-label="Close">&times;</button>
     <div class="modal-title">Place Your Order</div>
     <div class="modal-desc">Choose a platform to reach us instantly</div>
     <button class="plat-btn p-fb" onclick="doPlatform('messenger')">
@@ -728,11 +697,10 @@
   </div>
 </div>
 
-<!-- Track -->
 <div id="track-modal" class="modal" onclick="closeMod('track-modal')">
   <div class="modal-card" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
-    <button class="modal-x" onclick="closeMod('track-modal')">&times;</button>
+    <button class="modal-x" onclick="closeMod('track-modal')" aria-label="Close">&times;</button>
     <div class="modal-title">📦 Track My Order</div>
     <div class="modal-desc">သင့်ရဲ့ Phone Number ထည့်ပြီး ပါဆယ် အခြေအနေ စစ်ဆေးပါ</div>
     <input class="inp" id="trackInp" type="tel" inputmode="numeric" placeholder="e.g. 09xxxxxxxx" onkeypress="if(event.key==='Enter')doTrack()">
@@ -740,11 +708,10 @@
   </div>
 </div>
 
-<!-- Track result -->
 <div id="result-modal" class="modal" onclick="closeMod('result-modal')">
   <div class="modal-card modal-wide" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
-    <button class="modal-x" onclick="closeMod('result-modal')">&times;</button>
+    <button class="modal-x" onclick="closeMod('result-modal')" aria-label="Close">&times;</button>
     <div class="modal-title">Shipment Status</div>
     <div class="modal-divider"></div>
     <div class="cust-chip">
@@ -764,10 +731,15 @@ let activeCards=[], trackingData=[], displayLimit=8, orderProd='', userInteracte
 const PER=8;
 
 /* ──────────────────────────────────────────────
+   Helpers
+────────────────────────────────────────────── */
+const esc = (t) => (t || '').toString().replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+
+/* ──────────────────────────────────────────────
    Boot
 ────────────────────────────────────────────── */
-document.addEventListener('DOMContentLoaded',()=>{
-  if(localStorage.getItem('gz_dark')==='1') applyDark(true);
+document.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('gz_dark') === '1') applyDark(true);
   fetchProducts();
 });
 
@@ -775,51 +747,63 @@ document.addEventListener('DOMContentLoaded',()=>{
    Dark mode
 ────────────────────────────────────────────── */
 function applyDark(on){
-  document.body.classList.toggle('dark',on);
-  const ft=document.getElementById('fabTheme');
-  if(ft) ft.textContent=on?'☀️':'🌙';
+  document.body.classList.toggle('dark', on);
+  const ft = document.getElementById('fabTheme');
+  if(ft) ft.textContent = on ? '☀️' : '🌙';
 }
 function toggleDark(){
-  const on=!document.body.classList.contains('dark');
+  const on = !document.body.classList.contains('dark');
   applyDark(on);
-  localStorage.setItem('gz_dark',on?'1':'0');
+  localStorage.setItem('gz_dark', on ? '1' : '0');
 }
 
 /* ──────────────────────────────────────────────
    Toast
 ────────────────────────────────────────────── */
-function toast(msg,ok=false){
-  const a=document.getElementById('toast-area');
-  const el=document.createElement('div');
-  el.className='tp';
-  el.innerHTML=`${ok?'✅':'⚠️'} ${esc(msg)}`;
+function toast(msg, ok=false){
+  const a = document.getElementById('toast-area');
+  const el = document.createElement('div');
+  el.className = 'tp';
+  el.innerHTML = `${ok ? '✅' : '⚠️'} ${esc(msg)}`;
   a.appendChild(el);
-  requestAnimationFrame(()=>setTimeout(()=>el.classList.add('show'),10));
-  setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),360)},3200);
+  requestAnimationFrame(() => setTimeout(() => el.classList.add('show'), 10));
+  setTimeout(() => { 
+    el.classList.remove('show'); 
+    setTimeout(() => el.remove(), 360);
+  }, 3200);
 }
 
 /* ──────────────────────────────────────────────
    Fetch
 ────────────────────────────────────────────── */
 async function fetchProducts(){
-  const URL='https://script.google.com/macros/s/AKfycbz659VRQoUdRfXIEg0denAkFZ-0bYjXIUl5Aoq7YFAXuhZXf4j7lr4Z1apDP8Bqckf_/exec';
-  const cache=localStorage.getItem('gz_cache');
-  if(cache){
-    try{const p=JSON.parse(cache);trackingData=p.tracking||[];buildCards(p.products||[]);}
-    catch(e){console.error('Cache error',e);}
+  const URL = 'https://script.google.com/macros/s/AKfycbz659VRQoUdRfXIEg0denAkFZ-0bYjXIUl5Aoq7YFAXuhZXf4j7lr4Z1apDP8Bqckf_/exec';
+  const cache = localStorage.getItem('gz_cache');
+  
+  if (cache) {
+    try {
+      const p = JSON.parse(cache);
+      trackingData = p.tracking || [];
+      buildCards(p.products || []);
+    } catch(e) { 
+      console.error('Cache parsing error', e); 
+    }
   }
-  try{
-    const res=await fetch(URL);
-    if(!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data=await res.json();
-    localStorage.setItem('gz_cache',JSON.stringify(data));
-    trackingData=data.tracking||[];
-    if(!userInteracted) buildCards(data.products||[]);
-    else patchCards(data.products||[]);
-  }catch(e){
-    console.error('Fetch error',e);
-    if(!cache) document.getElementById('productGrid').innerHTML=
-      '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--c-muted)">Connection failed. Please try again.</div>';
+  
+  try {
+    const res = await fetch(URL);
+    if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
+    const data = await res.json();
+    localStorage.setItem('gz_cache', JSON.stringify(data));
+    trackingData = data.tracking || [];
+    if (!userInteracted) buildCards(data.products || []);
+    else patchCards(data.products || []);
+  } catch(e) {
+    console.error('Fetch error', e);
+    if (!cache) {
+      document.getElementById('productGrid').innerHTML =
+        '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--c-muted)">Connection failed. Please check your internet and try again.</div>';
+    }
   }
 }
 
@@ -827,25 +811,25 @@ async function fetchProducts(){
    Build / Patch
 ────────────────────────────────────────────── */
 function buildCards(products){
-  const g=document.getElementById('productGrid');
-  g.innerHTML='';
-  userInteracted=false;
-  products.forEach((item,i)=>{
-    const el=document.createElement('div');
-    el.className='prd-card';
-    el.dataset.idx  =i;
-    el.dataset.brand=(item.brand||'').toString();
-    el.dataset.title=(item.title||'').toString();
-    el.dataset.price=(item.price||'').toString();
-    el.dataset.desc =(item.desc ||'').toString();
-    el.innerHTML=`
+  const g = document.getElementById('productGrid');
+  g.innerHTML = '';
+  userInteracted = false;
+  
+  products.forEach((item, i) => {
+    const el = document.createElement('div');
+    el.className = 'prd-card';
+    el.dataset.idx = i;
+    el.dataset.brand = (item.brand || '').toString();
+    el.dataset.title = (item.title || '').toString();
+    el.dataset.price = (item.price || '').toString();
+    el.dataset.desc = (item.desc || '').toString();
+    
+    // Removed thumb-overlay & thumb-overlay-ico HTML here
+    el.innerHTML = `
       <div class="card-thumb">
-        <img src="${esc(item.img)}" alt="${esc(item.title)}"
+        <img loading="lazy" src="${esc(item.img)}" alt="${esc(item.title)}"
           onerror="this.src='https://placehold.co/300x300?text=No+Image'"
           onclick="viewImg(this.src)">
-        <div class="thumb-overlay">
-          <div class="thumb-overlay-ico" onclick="viewImg(this.closest('.card-thumb').querySelector('img').src)">🔍</div>
-        </div>
       </div>
       <div class="card-body">
         <div class="card-brand">${esc(item.brand)}</div>
@@ -853,96 +837,129 @@ function buildCards(products){
         <div class="card-price">${esc(item.price)}</div>
         <div class="card-btns">
           <button class="c-btn-info" onclick="viewDetails(this.closest('.prd-card'))">Details</button>
-          <button class="c-btn-buy"  onclick="openContact(this.closest('.prd-card').dataset.title)">Buy Now</button>
+          <button class="c-btn-buy" onclick="openContact(this.closest('.prd-card').dataset.title)">Buy Now</button>
         </div>
       </div>`;
     g.appendChild(el);
   });
-  setTab('all',document.getElementById('tab-all'));
+  
+  setTab('all', document.getElementById('tab-all'));
 }
+
 function patchCards(products){
-  products.forEach((item,i)=>{
-    const el=document.querySelector(`.prd-card[data-idx="${i}"]`);
-    if(!el)return;
-    el.dataset.brand=(item.brand||'').toString();
-    el.dataset.title=(item.title||'').toString();
-    el.dataset.price=(item.price||'').toString();
-    el.dataset.desc =(item.desc ||'').toString();
+  products.forEach((item, i) => {
+    const el = document.querySelector(`.prd-card[data-idx="${i}"]`);
+    if (!el) return;
+    el.dataset.brand = (item.brand || '').toString();
+    el.dataset.title = (item.title || '').toString();
+    el.dataset.price = (item.price || '').toString();
+    el.dataset.desc = (item.desc || '').toString();
   });
 }
 
 /* ──────────────────────────────────────────────
    Filter / Sort
 ────────────────────────────────────────────── */
-const priceOf=s=>parseInt((s||'0').replace(/\D/g,''))||0;
-
-function setTab(brand,el){
-  document.getElementById('searchBar').value='';
-  document.getElementById('clearBtn').style.display='none';
-  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
-  if(el) el.classList.add('on');
-  if(brand!=='all') userInteracted=true;
-  applyFilter(brand,true);
+function setTab(brand, el){
+  document.getElementById('searchBar').value = '';
+  document.getElementById('clearBtn').style.display = 'none';
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+  if (el) el.classList.add('on');
+  if (brand !== 'all') userInteracted = true;
+  applyFilter(brand, true);
 }
-function applyFilter(q,isBrand){
-  document.querySelectorAll('.prd-card').forEach(c=>c.classList.remove('on'));
-  activeCards=Array.from(document.querySelectorAll('.prd-card')).filter(c=>{
-    if(isBrand) return q==='all'||(c.dataset.brand||'').toLowerCase().trim()===q;
-    return (c.dataset.title||'').toLowerCase().includes(q)||(c.dataset.brand||'').toLowerCase().includes(q);
+
+function applyFilter(q, isBrand){
+  document.querySelectorAll('.prd-card').forEach(c => c.classList.remove('on'));
+  activeCards = Array.from(document.querySelectorAll('.prd-card')).filter(c => {
+    if (isBrand) return q === 'all' || (c.dataset.brand || '').toLowerCase().trim() === q;
+    return (c.dataset.title || '').toLowerCase().includes(q) || (c.dataset.brand || '').toLowerCase().includes(q);
   });
   sortCards();
 }
+
 function sortCards(){
-  activeCards.sort((a,b)=>parseInt(a.dataset.idx)-parseInt(b.dataset.idx));
-  const g=document.getElementById('productGrid');
-  activeCards.forEach(c=>g.appendChild(c));
-  displayLimit=PER;
+  activeCards.sort((a, b) => parseInt(a.dataset.idx) - parseInt(b.dataset.idx));
+  const g = document.getElementById('productGrid');
+  activeCards.forEach(c => g.appendChild(c));
+  displayLimit = PER;
   refreshDisplay();
 }
+
 function refreshDisplay(){
-  activeCards.forEach((c,i)=>c.classList.toggle('on',i<displayLimit));
-  document.getElementById('lm-wrap').style.display=activeCards.length>displayLimit?'block':'none';
-  document.getElementById('emptyState').style.display=activeCards.length===0?'block':'none';
-  const cnt=document.getElementById('prod-count');
-  cnt.textContent=activeCards.length?`Showing ${Math.min(displayLimit,activeCards.length)} of ${activeCards.length}`:'';
+  activeCards.forEach((c, i) => c.classList.toggle('on', i < displayLimit));
+  document.getElementById('lm-wrap').style.display = activeCards.length > displayLimit ? 'block' : 'none';
+  document.getElementById('emptyState').style.display = activeCards.length === 0 ? 'block' : 'none';
+  const cnt = document.getElementById('prod-count');
+  cnt.textContent = activeCards.length ? `Showing ${Math.min(displayLimit, activeCards.length)} of ${activeCards.length}` : '';
 }
-function loadMore(){displayLimit+=PER;refreshDisplay();}
+
+function loadMore(){
+  displayLimit += PER;
+  refreshDisplay();
+}
+
 function onSearch(){
-  const q=document.getElementById('searchBar').value.toLowerCase().trim();
-  document.getElementById('clearBtn').style.display=q?'block':'none';
-  if(!q){setTab('all',document.getElementById('tab-all'));return;}
-  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
-  userInteracted=true;
-  applyFilter(q,false);
+  const q = document.getElementById('searchBar').value.toLowerCase().trim();
+  document.getElementById('clearBtn').style.display = q ? 'block' : 'none';
+  
+  if (!q) {
+    setTab('all', document.getElementById('tab-all'));
+    return;
+  }
+  
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+  userInteracted = true;
+  applyFilter(q, false);
 }
+
 function clearSearch(){
-  document.getElementById('searchBar').value='';
-  document.getElementById('clearBtn').style.display='none';
-  userInteracted=false;
-  setTab('all',document.getElementById('tab-all'));
+  document.getElementById('searchBar').value = '';
+  document.getElementById('clearBtn').style.display = 'none';
+  userInteracted = false;
+  setTab('all', document.getElementById('tab-all'));
 }
 
 /* ──────────────────────────────────────────────
    Modals
 ────────────────────────────────────────────── */
-function openMod(id){document.getElementById(id).classList.add('open');document.body.classList.add('locked')}
-function closeMod(id){document.getElementById(id).classList.remove('open');if(!document.querySelector('.modal.open'))document.body.classList.remove('locked')}
+function openMod(id) { 
+  document.getElementById(id).classList.add('open'); 
+  document.body.classList.add('locked'); 
+}
 
-function viewImg(src){document.getElementById('modal-img').src=src;openMod('img-modal')}
+function closeMod(id) { 
+  document.getElementById(id).classList.remove('open'); 
+  if (!document.querySelector('.modal.open')) document.body.classList.remove('locked'); 
+}
+
+function viewImg(src){
+  document.getElementById('modal-img').src = src;
+  openMod('img-modal');
+}
+
 function viewDetails(card){
-  document.getElementById('d-name').innerText =card.dataset.title;
-  document.getElementById('d-price').innerText=card.dataset.price;
-  document.getElementById('d-desc').innerText =card.dataset.desc;
-  document.getElementById('d-buy').onclick=()=>{closeMod('details-modal');openContact(card.dataset.title)};
+  document.getElementById('d-name').innerText = card.dataset.title;
+  document.getElementById('d-price').innerText = card.dataset.price;
+  document.getElementById('d-desc').innerText = card.dataset.desc;
+  
+  document.getElementById('d-buy').onclick = () => {
+    closeMod('details-modal');
+    openContact(card.dataset.title);
+  };
   openMod('details-modal');
 }
-function openContact(title){orderProd=title||'';openMod('contact-modal')}
+
+function openContact(title){
+  orderProd = title || '';
+  openMod('contact-modal');
+}
 
 function doPlatform(p){
-  const q=orderProd?'?text='+encodeURIComponent('Hi, I want to inquire about: '+orderProd):'';
-  if(p==='messenger') window.open('https://m.me/100067458529116'+q,'_blank');
-  else if(p==='phone') window.location.href='tel:+959957399906';
-  else if(p==='telegram') window.open('https://t.me/Alpakamyanmar'+q,'_blank');
+  const q = orderProd ? '?text=' + encodeURIComponent('Hi, I want to inquire about: ' + orderProd) : '';
+  if (p === 'messenger') window.open('https://m.me/100067458529116' + q, '_blank', 'noopener,noreferrer');
+  else if (p === 'phone') window.location.href = 'tel:+959957399906';
+  else if (p === 'telegram') window.open('https://t.me/Alpakamyanmar' + q, '_blank', 'noopener,noreferrer');
   closeMod('contact-modal');
 }
 
@@ -950,49 +967,61 @@ function doPlatform(p){
    Tracking
 ────────────────────────────────────────────── */
 function doTrack(){
-  const raw=document.getElementById('trackInp').value.trim();
-  if(!raw){toast('ကျေးဇူးပြု၍ Phone Number ထည့်ပေးပါ။');return;}
-  const clean=raw.replace(/\s+/g,'');
-  const rows=trackingData.filter(r=>r.phone&&r.phone.toString().replace(/\s+/g,'')===clean);
-  if(!rows.length){toast('Phone Number မမှန်ကန်ပါ။ ပါဆယ်စာရင်း မရှိသေးပါ။');return;}
+  const raw = document.getElementById('trackInp').value.trim();
+  if (!raw) { toast('ကျေးဇူးပြု၍ Phone Number ထည့်ပေးပါ။'); return; }
+  
+  const clean = raw.replace(/\s+/g, '');
+  const rows = trackingData.filter(r => r.phone && r.phone.toString().replace(/\s+/g, '') === clean);
+  
+  if (!rows.length) { toast('Phone Number မမှန်ကန်ပါ။ ပါဆယ်စာရင်း မရှိသေးပါ။'); return; }
 
-  document.getElementById('res-name').innerText=rows[0].name||'Customer';
-  document.getElementById('res-phone').innerText=raw;
+  document.getElementById('res-name').innerText = rows[0].name || 'Customer';
+  document.getElementById('res-phone').innerText = raw;
 
-  document.getElementById('parcels-wrap').innerHTML=rows.map(r=>{
-    let raw=(r.status||'s1').toString().trim().toLowerCase();
-    if(['1','2','3','4'].includes(raw)) raw='s'+raw;
-    const type=['s','c','t'].includes(raw[0])?raw[0]:'s';
-    const step=parseInt(raw.substring(1))||1;
-    const ctry=type==='s'?'sg':type==='c'?'cn':'th';
-    const lbl =type==='s'?'Singapore':type==='c'?'China':'Thailand';
-    const dot=(n)=>{
-      const cls=n>=4&&step>=4?'f':step===n?'a':step>n?'d':'';
-      const chk=n>=4&&step>=4?'✔':'';
+  document.getElementById('parcels-wrap').innerHTML = rows.map(r => {
+    let statusRaw = (r.status || 's1').toString().trim().toLowerCase();
+    if (['1', '2', '3', '4'].includes(statusRaw)) statusRaw = 's' + statusRaw;
+    
+    const type = ['s', 'c', 't'].includes(statusRaw[0]) ? statusRaw[0] : 's';
+    const step = parseInt(statusRaw.substring(1)) || 1;
+    
+    // Country Names
+    const lbl = type === 's' ? 'Singapore' : type === 'c' ? 'China' : 'Thailand';
+    
+    // Origin Flags logic
+    const originFlag = type === 's' ? 'https://i.ibb.co/pj2H93Mh/Singapore.png' 
+                     : type === 'c' ? 'https://i.ibb.co/9HPFdxVC/Flag-China.webp' 
+                     : 'https://i.ibb.co/DPgNbPkW/Thailand.jpg';
+
+    const dot = (n) => {
+      const cls = (n >= 4 && step >= 4) ? 'f' : (step === n) ? 'a' : (step > n) ? 'd' : '';
+      const chk = (n >= 4 && step >= 4) ? '✔' : '';
       return `<div class="tl-dot ${cls}">${chk}</div>`;
     };
-    const line=(n)=>{
-      const cls=step===n?'m':step>n?'d':'';
+    
+    const line = (n) => {
+      const cls = (step === n) ? 'm' : (step > n) ? 'd' : '';
       return `<div class="tl-line ${cls}"></div>`;
     };
+    
     return `<div class="p-item">
       <div class="p-item-hdr">
-        <div><div class="p-title">📦 ${esc(r.product||'Unknown')}</div></div>
-        <div class="p-date">📅 ${esc((r.date||'').toString().split('T')[0]||'N/A')}</div>
+        <div><div class="p-title">📦 ${esc(r.product || 'Unknown')}</div></div>
+        <div class="p-date">📅 ${esc((r.date || '').toString().split('T')[0] || 'N/A')}</div>
       </div>
       <div class="tl-row">
         <div class="tl-col">
-          <img class="tl-flag" src="https://flagcdn.com/w40/${ctry}.png" alt="${esc(lbl)}">
+          <img class="tl-flag" src="${originFlag}" alt="${esc(lbl)}">
           <div class="tl-mid">${dot(1)}${line(1)}</div>
           <div class="tl-lbl">${esc(lbl)}</div>
         </div>
         <div class="tl-col">
-          <div class="tl-wh">🏭</div>
+          <img class="tl-flag" src="https://i.ibb.co/xSk6RCb7/Untitled-design.jpg" alt="Warehouse">
           <div class="tl-mid">${dot(2)}${line(2)}</div>
           <div class="tl-lbl">Warehouse</div>
         </div>
         <div class="tl-col">
-          <img class="tl-flag" src="https://flagcdn.com/w40/mm.png" alt="Myanmar">
+          <img class="tl-flag" src="https://i.ibb.co/xqF8WDR1/Myanmar.webp" alt="Myanmar">
           <div class="tl-mid">${dot(3)}${line(3)}</div>
           <div class="tl-lbl">Myanmar</div>
         </div>
@@ -1006,19 +1035,16 @@ function doTrack(){
   }).join('');
 
   closeMod('track-modal');
-  setTimeout(()=>openMod('result-modal'),360);
+  setTimeout(() => openMod('result-modal'), 360);
 }
 
 /* ──────────────────────────────────────────────
    Scroll FAB
 ────────────────────────────────────────────── */
-window.addEventListener('scroll',()=>
-  document.getElementById('fabUp').classList.toggle('show',window.scrollY>280),{passive:true});
+window.addEventListener('scroll', () => {
+  document.getElementById('fabUp').classList.toggle('show', window.scrollY > 280);
+}, { passive: true });
 
-/* ──────────────────────────────────────────────
-   Helpers
-────────────────────────────────────────────── */
-const esc=t=>(t||'').toString().replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 </script>
 </body>
 </html>
