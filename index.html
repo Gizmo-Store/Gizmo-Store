@@ -914,10 +914,14 @@ function toast(msg, ok=false){
 /* ──────────────────────────────────────────────
    Data Fetching & Rendering Engine
 ────────────────────────────────────────────── */
+/* ──────────────────────────────────────────────
+   Data Fetching & Rendering Engine
+────────────────────────────────────────────── */
 async function fetchProducts() {
   const URL = 'https://script.google.com/macros/s/AKfycbz659VRQoUdRfXIEg0denAkFZ-0bYjXIUl5Aoq7YFAXuhZXf4j7lr4Z1apDP8Bqckf_/exec';
 
-  const cache = localStorage.getItem('gz_cache');
+  // Cache နာမည်ကို ပြောင်းထားပါသည် (Cache အဟောင်းများ ရှင်းရန်)
+  const cache = localStorage.getItem('gz_cache_v2');
   let useCache = false;
 
   const renderInitialData = () => {
@@ -944,7 +948,7 @@ async function fetchProducts() {
           useCache = true;
         }
       } else {
-        localStorage.removeItem('gz_cache'); 
+        localStorage.removeItem('gz_cache_v2'); 
       }
     } catch (e) { console.error('Cache error', e); }
   }
@@ -955,8 +959,7 @@ async function fetchProducts() {
       const data = await response.json();
 
       data.timestamp = Date.now();
-      // Products များကိုသာ Cache လုပ်ပါမည်
-      localStorage.setItem('gz_cache', JSON.stringify({
+      localStorage.setItem('gz_cache_v2', JSON.stringify({
         timestamp: data.timestamp,
         products: data.products
       }));
@@ -994,9 +997,8 @@ function setTab(brand, el){
 }
 
 function applyFilter(q, isBrand){
-  if(allProducts.length === 0) return;
+  // ဤနေရာတွင် ရှိနေသော Early Return (if return) ကို ဖယ်ရှားထားပါသည်
   
-  // Space များကို ဖြုတ်ပြီး ရှာဖွေနိုင်ရန်
   const cleanQ = q.replace(/\s+/g, ''); 
   
   filteredProducts = allProducts.filter(item => {
@@ -1021,22 +1023,25 @@ function renderGrid() {
   
   const itemsToShow = filteredProducts.slice(0, displayLimit);
   
-  itemsToShow.forEach((item, idx) => {
+  itemsToShow.forEach((item) => {
     const title = esc(item.title);
     const price = esc(item.price);
     const desc = esc(item.desc);
     
+    // ပုံမပါလျှင် Fallback Image ထည့်သွင်းပေးမည့် မှန်ကန်သော Code
+    const imgSrc = item.img ? esc(item.img) : fallbackImg;
+    
     const el = document.createElement('div');
     el.className = 'prd-card';
-    // Store data inside dataset to easily access it on button click
     el.dataset.title = title;
     el.dataset.price = price;
     el.dataset.desc = desc;
     
     el.innerHTML = `
       <div class="card-thumb">
-const imgSrc = item.img ? esc(item.img) : fallbackImg;
-<img loading="lazy" src="${imgSrc}" alt="${title}" width="200" height="200" onerror="this.onerror=null; this.src='${fallbackImg}'" onclick="viewImg(this.src)">
+        <img loading="lazy" src="${imgSrc}" alt="${title}" width="200" height="200"
+          onerror="this.onerror=null; this.src='${fallbackImg}'"
+          onclick="viewImg(this.src)">
       </div>
       <div class="card-body">
         <div class="card-brand">${esc(item.brand)}</div>
