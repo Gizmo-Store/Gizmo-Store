@@ -60,7 +60,9 @@
     .announce {
       background:var(--c-brand); color:#fff;
       font-size:12px; font-weight:600; letter-spacing:.3px;
-      overflow:hidden; white-space:nowrap; padding:8px 0;
+      overflow:hidden; white-space:nowrap; 
+      padding-top: calc(8px + env(safe-area-inset-top)); /* Dynamic Island ကွယ်ခြင်းမှ ကာကွယ်ရန် */
+      padding-bottom: 8px;
       width: 100%;
     }
     .announce-track {
