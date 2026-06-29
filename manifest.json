@@ -1,0 +1,17 @@
+{
+  "name": "Gizmo Store",
+  "short_name": "Gizmo",
+  "description": "Premium Tech & Gadgets Store in Myanmar",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F9FAFB",
+  "theme_color": "#B91C1C",
+  "icons": [
+    {
+      "src": "https://i.ibb.co/b5RvKdSQ/IMG-0619.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}
