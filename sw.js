@@ -1,9 +1,9 @@
 const CACHE_NAME = 'gizmo-app-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/app.js'
+  './',
+  'index.html',
+  'style.css',
+  'app.js'
 ];
 
 // App ကို Install လုပ်သည့်အခါ ဖိုင်များကို မှတ်သားထားခြင်း
