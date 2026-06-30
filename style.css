@@ -114,6 +114,7 @@
     /* ── Main Slider ── */
     .main-slider {
       position: relative; width: 100%; 
+      max-width: 1920px; margin: 0 auto; /* Screen အကြီးကြီးတွေမှာ အလယ်ဗဟိုမှာပဲ သပ်သပ်ရပ်ရပ်ရှိနေစေရန် */
       aspect-ratio: 16/9; 
       background: var(--c-surf3); overflow: hidden; touch-action: pan-y; 
     }
@@ -124,8 +125,12 @@
       display: flex; width: 100%; height: 100%; will-change: transform;
     }
     .main-slider .slide {
-      flex: 0 0 100%; width: 100%; height: 100%; object-fit: cover;
+      flex: 0 0 100%; width: 100%; height: 100%; display: block;
       user-select: none; -webkit-user-drag: none; pointer-events: none;
+    }
+    /* ပုံများကို အချိုးကျ ကွက်တိဖြစ်စေရန် */
+    .main-slider .slide img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
     }
     .slider-dots {
       position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
