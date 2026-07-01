@@ -90,7 +90,7 @@
       display:flex; align-items:center; gap:14px;
     }
     .logo {display:flex; align-items:center; gap:9px; text-decoration:none; flex-shrink:0}
-    .logo-mark {width:36px; height:36px; border-radius:10px; object-fit:cover; box-shadow:var(--sh-sm);}
+    .logo-mark {width:auto; height:36px; object-fit:contain;}
     .logo-text {font-size:16px; font-weight:800; letter-spacing:-.5px; color:var(--c-brand)}
     
     .hdr-search {flex:1; position:relative}
@@ -278,7 +278,7 @@
     .ft-top {display:grid; grid-template-columns:1fr; gap:48px; padding-bottom:40px; margin-bottom:40px; border-bottom:1px solid var(--c-border);}
     @media(min-width:640px) {.ft-top {grid-template-columns:1.4fr 1fr 1fr}}
 
-    .ft-brand .ft-logo {width:46px; height:46px; border-radius:12px; object-fit:cover; margin-bottom:14px; box-shadow:var(--sh-sm)}
+    .ft-brand .ft-logo {width:auto; height:46px; object-fit:contain; margin-bottom:14px;}
     .ft-brand-name {font-size:18px; font-weight:800; letter-spacing:-.4px; color:var(--c-brand); margin-bottom:10px}
     .ft-brand-desc {font-size:13px; color:var(--c-sub); font-weight:500; line-height:1.9; max-width:300px; margin-bottom:18px}
     .ft-about-btn {

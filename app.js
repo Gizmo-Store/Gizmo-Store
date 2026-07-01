@@ -2,8 +2,8 @@
    Optimized App Logic & Data-Driven Rendering
 ────────────────────────────────────────────── */
 
-// ပြင်ဆင်ပြီးသား Fallback Image Code
-const fallbackImg = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27300%27 viewBox=%270 0 300 300%27%3E%3Crect width=%27300%27 height=%27300%27 fill=%27%23f3f4f6%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 font-family=%27sans-serif%27 font-weight=%27bold%27 font-size=%2722%27 fill=%27%239ca3af%27%3ENo Image%3C/text%3E%3C/svg%3E";
+// 🌙 Light/Dark Mode နှင့် အလိုအလျောက် လိုက်ဖက်မည့် Transparent Fallback Image
+const fallbackImg = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27300%27 viewBox=%270 0 300 300%27%3E%3Crect width=%27300%27 height=%27300%27 fill=%27transparent%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 font-family=%27sans-serif%27 font-weight=%27bold%27 font-size=%2722%27 fill=%27%239ca3af%27%3ENo Image%3C/text%3E%3C/svg%3E";
 
 // State Management
 let allProducts = [];
@@ -172,14 +172,13 @@ window.addEventListener('resize', () => {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const savedDark = localStorage.getItem('gz_dark');
-  if (savedDark === '1' || (!savedDark && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-    applyDark(true);
-  } else {
-    applyDark(false);
-  }
   initSlider(); 
   fetchProducts();
+  
+  // Theme Toggle Button ပုံစံ မှန်ကန်စေရန်
+  const isDark = document.body.classList.contains('dark');
+  const ft = document.getElementById('fabTheme');
+  if(ft) ft.textContent = isDark ? '☀️' : '🌙';
 });
 
 function applyDark(on){
@@ -232,13 +231,41 @@ async function fetchProducts() {
     try {
       const cachedData = JSON.parse(cache);
       const now = Date.now();
-      const CACHE_EXPIRY = 3 * 60 * 60 * 1000; 
+      // Cache သက်တမ်းကို ၃ နာရီအစား ၃ မိနစ်သို့ လျှော့ချ
+      const CACHE_EXPIRY = 3 * 60 * 1000; 
 
       if (cachedData.timestamp && (now - cachedData.timestamp < CACHE_EXPIRY)) {
         if (cachedData.products) {
           allProducts = cachedData.products;
           renderInitialData(); 
           useCache = true;
+          
+          //  Pro UX (Stale-While-Revalidate): Data အဟောင်းကို ချက်ချင်းပြထားသော်လည်း၊ နောက်ကွယ်မှ Data အသစ်ကို တိတ်တဆိတ် ထပ်ယူထားမည်။
+          fetch(URL).then(res => res.json()).then(newData => {
+            if (newData.products && newData.products.length > 0) {
+              localStorage.setItem('gz_cache_v2', JSON.stringify({
+                timestamp: Date.now(),
+                products: newData.products
+              }));
+              allProducts = newData.products;
+              
+              // 🚀 Pro UX: Customer ဖတ်နေသော နေရာမပျက်စေဘဲ ဈေးနှုန်းနှင့် ပစ္စည်းအသစ်များကိုသာ တိတ်တဆိတ် Update လုပ်ပေးမည်
+              const currentQ = document.getElementById('searchBar').value.toLowerCase().trim();
+              const activeTab = document.querySelector('.chip.on');
+              const brand = activeTab ? activeTab.id.replace('tab-', '') : 'all';
+              
+              filteredProducts = allProducts.filter(item => {
+                const brandStr = (item.brand || '').toLowerCase().trim();
+                const titleStr = (item.title || '').toLowerCase();
+                if (currentQ) {
+                  return titleStr.replace(/\s+/g, '').includes(currentQ.replace(/\s+/g, '')) || brandStr.includes(currentQ);
+                } else {
+                  return brand === 'all' || brandStr === brand; 
+                }
+              });
+              renderGrid(); // မျက်နှာပြင်ပေါ်ရှိ စာရင်းကို အသစ်ပြောင်းမည်
+            }
+          }).catch(() => {}); // Error မပြဘဲ ကျော်သွားမည်
         }
       } else {
         localStorage.removeItem('gz_cache_v2'); 
@@ -287,6 +314,12 @@ function setTab(brand, el){
   if (el) el.classList.add('on');
   
   applyFilter(brand, true);
+
+  // 🌟 Category ပြောင်းလိုက်တိုင်း Product စာရင်း၏ ထိပ်ဆုံးသို့ အလိုအလျောက် Scroll ဆွဲတင်ပေးရန် (UX)
+  const secHead = document.querySelector('.sec-head');
+  if(secHead && window.scrollY > secHead.offsetTop) {
+    window.scrollTo({ top: secHead.offsetTop - 70, behavior: 'smooth' });
+  }
 }
 
 function applyFilter(q, isBrand){
@@ -420,6 +453,14 @@ function openMod(id) {
   }
   document.getElementById(id).classList.add('open');
   document.body.classList.add('locked');
+
+  // ⌨️ Track Modal ပွင့်လာပါက Keyboard အသင့်ပွင့်လာစေရန် အလိုအလျောက် Focus လုပ်ပေးခြင်း
+  if (id === 'track-modal') {
+    setTimeout(() => {
+      const trackInp = document.getElementById('trackInp');
+      if (trackInp) trackInp.focus();
+    }, 100);
+  }
 }
 
 function closeMod(id) {
@@ -441,6 +482,15 @@ window.addEventListener('popstate', () => {
   if (openModals.length > 0) {
     openModals.forEach(m => m.classList.remove('open'));
     document.body.classList.remove('locked');
+  }
+});
+
+
+// ⌨️ Esc Key နှိပ်လျှင် ပွင့်နေသော Modal ကို အလိုအလျောက်ပိတ်စေရန်
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const openModal = document.querySelector('.modal.open');
+    if (openModal) closeMod(openModal.id);
   }
 });
 
@@ -482,6 +532,12 @@ async function doTrack(){
   if (!clean || clean.length < 8) { 
     toast('ဖုန်းနံပါတ် မှန်ကန်မှုမရှိပါ။ ပြန်လည်စစ်ဆေးပေးပါ။'); 
     return; 
+  }
+
+  // 🌐 အင်တာနက် ပိတ်ထားချိန် Track လုပ်မိပါက ချက်ချင်း သတိပေးရန်
+  if (!navigator.onLine) {
+    toast('အင်တာနက် ချိတ်ဆက်မှု မရှိပါ။ Data သို့မဟုတ် Wi-Fi ကို ဖွင့်ပါ။');
+    return;
   }
 
   const trackBtn = document.querySelector('#track-modal .btn-primary');
@@ -568,7 +624,7 @@ try {
             <div class="tl-lbl">Myanmar</div>
           </div>
           <div class="tl-col">
-            <img class="tl-flag" style="border-radius:5px" src="https://i.ibb.co/b5RvKdSQ/IMG-0619.jpg" alt="Gizmo" loading="lazy">
+            <img class="tl-flag" style="border-radius:5px" src="https://res.cloudinary.com/dfuyt9ycz/image/upload/v1782898025/gizmo_log_t2uhrk.jpg" alt="Gizmo" loading="lazy">
             <div class="tl-mid">${dot(4)}</div>
             <div class="tl-lbl">Gizmo</div>
           </div>
@@ -580,7 +636,9 @@ try {
     setTimeout(() => openMod('result-modal'), 300);
 
   } catch (error) {
-    toast('ချိတ်ဆက်မှု ပြတ်တောက်သွားပါသည်။ ခေတ္တစောင့်ပြီး ပြန်စမ်းကြည့်ပါ။');
+    // Server မှ ပေးပို့သော Error (သို့မဟုတ်) အင်တာနက် ချိတ်ဆက်မှု Error ကို ခွဲခြားပြသရန်
+    const msg = error.message.includes('Server') ? error.message : 'ချိတ်ဆက်မှု ပြတ်တောက်သွားပါသည်။ ခေတ္တစောင့်ပြီး ပြန်စမ်းကြည့်ပါ။';
+    toast(msg);
   } finally {
     trackBtn.innerText = originalText;
     trackBtn.disabled = false;
@@ -589,6 +647,11 @@ try {
 
 window.addEventListener('scroll', () => {
   document.getElementById('fabUp').classList.toggle('show', window.scrollY > 280);
+  
+  // ဖုန်းဖြင့် Scroll ဆွဲပါက ပွင့်နေသော Search Keyboard ကို အလိုအလျောက် ပိတ်ပေးရန်
+  if (document.activeElement && document.activeElement.id === 'searchBar') {
+    document.activeElement.blur();
+  }
 }, { passive: true });
 
 /* ──────────────────────────────────────────────

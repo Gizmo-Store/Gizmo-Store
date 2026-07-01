@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gizmo-app-v1';
+const CACHE_NAME = 'gizmo-app-v2';
 const urlsToCache = [
   './',
   'index.html',
@@ -16,12 +16,39 @@ self.addEventListener('install', event => {
   );
 });
 
-// နောက်တစ်ကြိမ် App ဖွင့်သည့်အခါ မှတ်ထားသည့် ဖိုင်များကို ချက်ချင်းပြန်ပြခြင်း
+// 🌐 Network-First & Security Logic
 self.addEventListener('fetch', event => {
+  // 🔒 Security: Google API (Products & Tracking) များကို Service Worker မှ လုံးဝ Cache မလုပ်ရန် တားမြစ်ခြင်း (Data အမှားများ မပေါ်စေရန်)
+  if (event.request.url.includes('script.google.com')) {
+    return; 
+  }
+
   event.respondWith(
-    caches.match(event.request)
+    fetch(event.request)
       .then(response => {
-        return response || fetch(event.request);
+        // အင်တာနက်ရလျှင် File အသစ်များကို တောင်းယူပြီး Cache ထဲတွင် Update လုပ်မည်
+        const resClone = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, resClone));
+        return response;
       })
+      .catch(() => {
+        // အင်တာနက် မရှိတော့မှသာ ဖုန်းထဲတွင် မှတ်ထားသော (Offline) Cache ကို ပြန်သုံးမည်
+        return caches.match(event.request);
+      })
+  );
+});
+
+// 🧹 App version အသစ်တင်တိုင်း Cache အဟောင်းများကို ရှင်းလင်းပေးခြင်း (ဖုန်း Storage မပြည့်စေရန်)
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName); // နာမည်မတူတဲ့ Cache အဟောင်းမှန်သမျှ ဖျက်ပစ်မည်
+          }
+        })
+      );
+    })
   );
 });

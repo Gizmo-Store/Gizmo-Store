@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="description" content="Gizmo Store Myanmar - Premium Tech, Gadgets and Accessories">
-  <meta name="theme-color" content="#B91C1C">
+  <meta name="theme-color" content="#B91C1C" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0C0F14" media="(prefers-color-scheme: dark)">
   <meta property="og:title" content="Gizmo Store">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://i.ibb.co/b5RvKdSQ/IMG-0619.jpg">
+  <meta property="og:image" content="https://res.cloudinary.com/dfuyt9ycz/image/upload/v1782899524/PS_Gizmo_png_logo_dumddi.png">
   <meta property="og:description" content="Premium Tech & Gadgets Store in Myanmar">
   <meta property="og:site_name" content="Gizmo Store">
   <meta name="robots" content="index,follow,max-image-preview:large">
@@ -40,6 +41,12 @@
 
 </head>
 <body>
+<script>
+  if (localStorage.getItem('gz_dark') === '1' || (!localStorage.getItem('gz_dark') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.body.classList.add('dark');
+  }
+</script>
+
 <div id="toast-area"></div>
 
 <header class="site-hdr">
@@ -57,7 +64,7 @@
   </div>
   <div class="hdr-row">
     <a class="logo" href="/">
-      <img class="logo-mark" src="https://i.ibb.co/b5RvKdSQ/IMG-0619.jpg" alt="Gizmo" width="36" height="36">
+      <img class="logo-mark" src="https://res.cloudinary.com/dfuyt9ycz/image/upload/v1782899524/PS_Gizmo_png_logo_dumddi.png" alt="Gizmo" width="36" height="36">
       <span class="logo-text">Gizmo Store</span>
     </a>
     <div class="hdr-search">
@@ -142,7 +149,7 @@
   <div class="ft-inner">
     <div class="ft-top">
       <div class="ft-brand">
-        <img class="ft-logo" src="https://i.ibb.co/b5RvKdSQ/IMG-0619.jpg" alt="Gizmo" width="46" height="46" loading="lazy">
+        <img class="ft-logo" src="https://res.cloudinary.com/dfuyt9ycz/image/upload/v1782899524/PS_Gizmo_png_logo_dumddi.png" alt="Gizmo" width="46" height="46" loading="lazy">
         <div class="ft-brand-name">Gizmo Store</div>
         <p class="ft-brand-desc">Your destination for premium IT products, EDC tools, and mobile accessories — based in Mandalay, delivering across Myanmar.</p>
         <button type="button" class="ft-about-btn" onclick="openMod('about-modal')">📄 About Us</button>
