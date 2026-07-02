@@ -8,9 +8,9 @@
   "theme_color": "#B91C1C",
   "icons": [
     {
-      "src": "https://i.ibb.co/b5RvKdSQ/IMG-0619.jpg",
+      "src": "https://res.cloudinary.com/dfuyt9ycz/image/upload/v1782976602/Jepg_jzrh3c.png",
       "sizes": "512x512",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]
