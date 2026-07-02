@@ -6,11 +6,12 @@
   "display": "standalone",
   "background_color": "#F9FAFB",
   "theme_color": "#B91C1C",
+
   "icons": [
     {
-      "src": "https://res.cloudinary.com/dfuyt9ycz/image/upload/v1782976602/Jepg_jzrh3c.png",
+      "src": "https://res.cloudinary.com/dfuyt9ycz/image/upload/v1782978015/Done_jpg_logo_jnvpf5.jpg",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/jpeg",
       "purpose": "any maskable"
     }
   ]
