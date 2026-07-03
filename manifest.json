@@ -1,5 +1,5 @@
 {
-  "name": "Gizmo Store",
+  "name": "Gizmo Myanmar",
   "short_name": "Gizmo",
   "description": "Premium Tech & Gadgets Store in Myanmar",
   "start_url": "./",
@@ -9,7 +9,7 @@
 
   "icons": [
     {
-      "src": "https://res.cloudinary.com/dfuyt9ycz/image/upload/v1783064751/gizmo_jpg_3.7.2026_o65zoe.jpg",
+      "src": "https://res.cloudinary.com/dfuyt9ycz/image/upload/v1782978015/Done_jpg_logo_jnvpf5.jpg",
       "sizes": "512x512",
       "type": "image/jpeg",
       "purpose": "any maskable"
