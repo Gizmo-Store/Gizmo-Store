@@ -7,7 +7,13 @@
   "background_color": "#F9FAFB",
   "theme_color": "#0C0F14",
 
-  "icons": [
+"icons": [
+    {
+      "src": "https://res.cloudinary.com/dfuyt9ycz/image/upload/v1782978015/Done_jpg_logo_jnvpf5.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
     {
       "src": "https://res.cloudinary.com/dfuyt9ycz/image/upload/v1782978015/Done_jpg_logo_jnvpf5.jpg",
       "sizes": "512x512",
@@ -15,4 +21,3 @@
       "purpose": "any maskable"
     }
   ]
-}
