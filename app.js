@@ -516,9 +516,7 @@ function openContact(title){
 function doPlatform(p){
   const tgQuery = orderProd ? '?text=' + encodeURIComponent('Hi, I want to inquire about: ' + orderProd) : '';
   if (p === 'messenger') {
-    window.open('https://m.me/100067458529116', '_blank', 'noopener,noreferrer');
-  } else if (p === 'phone') {
-    window.location.href = 'tel:+959957399906';
+    window.open('https://www.facebook.com/share/1UdKJrfqfP/?mibextid=wwXIfr', '_blank', 'noopener,noreferrer');
   } else if (p === 'telegram') {
     window.open('https://t.me/GizmoMDY1' + tgQuery, '_blank', 'noopener,noreferrer');
   }
