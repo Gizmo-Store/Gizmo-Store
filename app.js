@@ -527,7 +527,8 @@ async function doTrack(){
   const raw = document.getElementById('trackInp').value.trim();
   const clean = normalizePhone(raw); 
   
-  if (!clean || clean.length < 8) { 
+  // မြန်မာဖုန်းနံပါတ်သည် အနည်းဆုံး ၈ လုံးမှ အများဆုံး ၁၁ လုံးအထိ ရှိပါသည်
+  if (!clean || clean.length < 8 || clean.length > 11) { 
     toast('ဖုန်းနံပါတ် မှန်ကန်မှုမရှိပါ။ ပြန်လည်စစ်ဆေးပေးပါ။'); 
     return; 
   }
@@ -571,7 +572,8 @@ try {
 
     let maskedPhone = clean;
     if(clean.length >= 8) {
-      maskedPhone = clean.substring(0, 4) + '****' + clean.substring(clean.length - 3);
+      // အရှေ့ ၃ လုံး နှင့် အနောက် ၃ လုံးကိုပြပြီး အလယ်ကို ဖုံးထားပါမည် (ဥပမာ - 094****345)
+      maskedPhone = clean.substring(0, 3) + '****' + clean.substring(clean.length - 3);
     }
 
     document.getElementById('res-name').innerText = rows[0].name || 'Customer';
@@ -645,8 +647,9 @@ try {
 
 window.addEventListener('scroll', () => {
   document.getElementById('fabUp').classList.toggle('show', window.scrollY > 280);
-  
-  // ဖုန်းဖြင့် Scroll ဆွဲပါက ပွင့်နေသော Search Keyboard ကို အလိုအလျောက် ပိတ်ပေးရန်
+}, { passive: true });
+
+window.addEventListener('touchmove', () => {
   if (document.activeElement && document.activeElement.id === 'searchBar') {
     document.activeElement.blur();
   }

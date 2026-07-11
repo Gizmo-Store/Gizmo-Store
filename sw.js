@@ -16,25 +16,33 @@ self.addEventListener('install', event => {
   );
 });
 
-// 🌐 Network-First & Security Logic
+// 🌐 Optimized Fetch Strategy (Stale-While-Revalidate for Lightning Speed)
 self.addEventListener('fetch', event => {
-  // 🔒 Security: Google API (Products & Tracking) များကို Service Worker မှ လုံးဝ Cache မလုပ်ရန် တားမြစ်ခြင်း (Data အမှားများ မပေါ်စေရန်)
-  if (event.request.url.includes('script.google.com')) {
+  const url = event.request.url;
+
+  // 🔒 ၁။ Google API နှင့် Google Analytics/Tag Manager များကို Cache လုံးဝ မလုပ်ဘဲ Network မှသာ တိုက်ရိုက်ယူမည်
+  if (url.includes('script.google.com') || url.includes('googletagmanager.com') || url.includes('google-analytics.com')) {
     return; 
   }
 
+  // ⚡ ၂။ App Shell (HTML, CSS, JS) အတွက် Stale-While-Revalidate Strategy
   event.respondWith(
-    fetch(event.request)
-      .then(response => {
-        // အင်တာနက်ရလျှင် File အသစ်များကို တောင်းယူပြီး Cache ထဲတွင် Update လုပ်မည်
-        const resClone = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(event.request, resClone));
-        return response;
-      })
-      .catch(() => {
-        // အင်တာနက် မရှိတော့မှသာ ဖုန်းထဲတွင် မှတ်ထားသော (Offline) Cache ကို ပြန်သုံးမည်
-        return caches.match(event.request);
-      })
+    caches.match(event.request).then(cachedResponse => {
+      // နောက်ကွယ်မှ Network ကို တိတ်တဆိတ် ခေါ်ပြီး Cache ကို အသစ်ပြင်ဆင်ခြင်း (Background Revalidation)
+      const fetchPromise = fetch(event.request).then(networkResponse => {
+        // အောင်မြင်သော Basic Request ဖြစ်မှသာ Cache ထဲသို့ အသစ်ထပ်ထည့်မည်
+        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+          const resClone = networkResponse.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, resClone));
+        }
+        return networkResponse;
+      }).catch(() => {
+        // Offline ဖြစ်နေပါက Error မပြဘဲ တိတ်တဆိတ် လျစ်လျူရှုမည်
+      });
+
+      // Cache ထဲတွင် ရှိပါက ချက်ချင်းပြန်ပြပေးမည် (စောင့်စရာမလိုပါ)။ Cache မရှိမှသာ Network ကို စောင့်မည်။
+      return cachedResponse || fetchPromise;
+    })
   );
 });
 

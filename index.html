@@ -65,7 +65,7 @@
   <div class="hdr-row">
     <a class="logo" href="/">
       <img class="logo-mark" src="https://res.cloudinary.com/dfuyt9ycz/image/upload/v1782978015/Done_jpg_logo_jnvpf5.jpg" alt="Gizmo" width="36" height="36">
-      <span class="logo-text">Gizmo Store</span>
+      <h1 class="logo-text" style="font-size:16px; margin:0;">Gizmo Store</h1>
     </a>
     <div class="hdr-search">
       <span class="s-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
@@ -141,7 +141,12 @@
     <div class="sk"><div class="sk-img-b sk-pulse sk-line"></div><div class="sk-body"><div class="sk-line sk-pulse" style="width:55%;"></div><div class="sk-line sk-pulse" style="width:80%;"></div><div class="sk-line sk-pulse" style="width:40%;"></div><div class="sk-btn-b sk-pulse"></div></div></div>
   </div>
 
-  <div class="empty" id="emptyState"><div class="ico">🔍</div><h3>No Results Found</h3><p>Try a different keyword or category.</p></div>
+  <div class="empty" id="emptyState">
+    <div class="ico">🔍</div>
+    <h3>No Results Found</h3>
+    <p>Try a different keyword or category.</p>
+    <button type="button" class="btn-secondary" style="max-width: 150px; margin: 15px auto 0;" onclick="clearSearch()">Clear Search</button>
+  </div>
 </div>
 <div id="lm-wrap"><button type="button" class="lm-btn" onclick="loadMore()">More Products ↓</button></div>
 
@@ -218,7 +223,8 @@
 </div>
 
 <div id="img-modal" class="modal" onclick="closeMod('img-modal')">
-  <img id="modal-img" src="" alt="Product" >
+  <button type="button" class="modal-x" style="top: 20px; right: 20px; z-index: 10;" onclick="closeMod('img-modal')" aria-label="Close">&times;</button>
+  <img id="modal-img" src="" alt="Product" onclick="event.stopPropagation()">
 </div>
 
 <div id="details-modal" class="modal" onclick="closeMod('details-modal')">
@@ -260,7 +266,7 @@
     <button type="button" class="modal-x" onclick="closeMod('track-modal')" aria-label="Close">&times;</button>
     <div class="modal-title">📦 Track Your Order</div>
     <div class="modal-desc">သင့်ရဲ့ Phone Number ထည့်ပြီး ပါဆယ် အခြေအနေ စစ်ဆေးပါ</div>
-    <input class="inp" id="trackInp" type="tel" placeholder="09xxxxxxxxx" oninput="this.value=this.value.replace(/[^0-9]/g,'')" onkeypress="if(event.key==='Enter')doTrack()">
+    <input class="inp" id="trackInp" type="tel" inputmode="numeric" placeholder="09xxxxxxxxx" oninput="this.value=this.value.replace(/[^0-9]/g,'')" onkeypress="if(event.key==='Enter')doTrack()">
     <button type="button" class="btn-primary" style="width: 100%;" onclick="doTrack()">Track Shipment</button>
   </div>
 </div>
