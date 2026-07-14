@@ -240,32 +240,35 @@ async function fetchProducts() {
           renderInitialData(); 
           useCache = true;
           
-          //  Pro UX (Stale-While-Revalidate): Data အဟောင်းကို ချက်ချင်းပြထားသော်လည်း၊ နောက်ကွယ်မှ Data အသစ်ကို တိတ်တဆိတ် ထပ်ယူထားမည်။
           fetch(URL).then(res => res.json()).then(newData => {
             if (newData.products && newData.products.length > 0) {
+              // Cache Data နှင့် Server Data မတူမှသာ Update လုပ်ပြီး Re-render ခေါ်ပါမည် (Flicker မဖြစ်စေရန်)
+              const isDataChanged = JSON.stringify(cachedData.products) !== JSON.stringify(newData.products);
+              
               localStorage.setItem('gz_cache_v2', JSON.stringify({
                 timestamp: Date.now(),
                 products: newData.products
               }));
               allProducts = newData.products;
               
-              // 🚀 Pro UX: Customer ဖတ်နေသော နေရာမပျက်စေဘဲ ဈေးနှုန်းနှင့် ပစ္စည်းအသစ်များကိုသာ တိတ်တဆိတ် Update လုပ်ပေးမည်
-              const currentQ = document.getElementById('searchBar').value.toLowerCase().trim();
-              const activeTab = document.querySelector('.chip.on');
-              const brand = activeTab ? activeTab.id.replace('tab-', '') : 'all';
-              
-              filteredProducts = allProducts.filter(item => {
-                const brandStr = (item.brand || '').toLowerCase().trim();
-                const titleStr = (item.title || '').toLowerCase();
-                if (currentQ) {
-                  return titleStr.replace(/\s+/g, '').includes(currentQ.replace(/\s+/g, '')) || brandStr.includes(currentQ);
-                } else {
-                  return brand === 'all' || brandStr === brand; 
-                }
-              });
-              renderGrid(); // မျက်နှာပြင်ပေါ်ရှိ စာရင်းကို အသစ်ပြောင်းမည်
+              if (isDataChanged) {
+                const currentQ = document.getElementById('searchBar').value.toLowerCase().trim();
+                const activeTab = document.querySelector('.chip.on');
+                const brand = activeTab ? activeTab.id.replace('tab-', '') : 'all';
+                
+                filteredProducts = allProducts.filter(item => {
+                  const brandStr = (item.brand || '').toLowerCase().trim();
+                  const titleStr = (item.title || '').toLowerCase();
+                  if (currentQ) {
+                    return titleStr.replace(/\s+/g, '').includes(currentQ.replace(/\s+/g, '')) || brandStr.includes(currentQ);
+                  } else {
+                    return brand === 'all' || brandStr === brand; 
+                  }
+                });
+                renderGrid();
+              }
             }
-          }).catch(() => {}); // Error မပြဘဲ ကျော်သွားမည်
+          }).catch(() => {});
         }
       } else {
         localStorage.removeItem('gz_cache_v2'); 
@@ -579,10 +582,12 @@ try {
 
     document.getElementById('parcels-wrap').innerHTML = rows.map(r => {
       let statusRaw = (r.status || 's1').toString().trim().toLowerCase();
-      if (['1', '2', '3', '4'].includes(statusRaw)) statusRaw = 's' + statusRaw;
+      let type = 's'; // Default to Singapore
+      if (statusRaw.startsWith('c') || statusRaw.includes('china')) type = 'c';
+      else if (statusRaw.startsWith('t') || statusRaw.includes('thai')) type = 't';
       
-      const type = ['s', 'c', 't'].includes(statusRaw[0]) ? statusRaw[0] : 's';
-      const step = parseInt(statusRaw.substring(1)) || 1;
+      const stepMatch = statusRaw.match(/[1-4]/);
+      const step = stepMatch ? parseInt(stepMatch[0]) : 1;
       
       const lbl = type === 's' ? 'Singapore' : type === 'c' ? 'China' : 'Thailand';
       const originFlag = type === 's' ? 'https://i.ibb.co/pj2H93Mh/Singapore.png' 
@@ -630,8 +635,7 @@ try {
       </div>`;
     }).join('');
 
-    closeMod('track-modal');
-    setTimeout(() => openMod('result-modal'), 300);
+    openMod('result-modal');
 
   } catch (error) {
     // Server မှ ပေးပို့သော Error (သို့မဟုတ်) အင်တာနက် ချိတ်ဆက်မှု Error ကို ခွဲခြားပြသရန်

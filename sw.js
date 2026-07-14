@@ -18,15 +18,18 @@ self.addEventListener('install', event => {
 
 // 🌐 Network-First & Security Logic
 self.addEventListener('fetch', event => {
-  // 🔒 Security: Google API (Products & Tracking) များကို Service Worker မှ လုံးဝ Cache မလုပ်ရန် တားမြစ်ခြင်း (Data အမှားများ မပေါ်စေရန်)
-  if (event.request.url.includes('script.google.com')) {
+  // 🔒 Security & Method Check: GET request မဟုတ်လျှင် (သို့) Google API ဖြစ်လျှင် Cache မလုပ်ရန် တားမြစ်ခြင်း
+  if (event.request.method !== 'GET' || event.request.url.includes('script.google.com')) {
     return; 
   }
 
   event.respondWith(
     fetch(event.request)
       .then(response => {
-        // အင်တာနက်ရလျှင် File အသစ်များကို တောင်းယူပြီး Cache ထဲတွင် Update လုပ်မည်
+        // Status 200 ဖြစ်မှသာ Cache ထဲထည့်မည် (Error Pages နှင့် Opaque Data များ ဖုန်း Storage မပြည့်စေရန်)
+        if (!response || response.status !== 200 || response.type !== 'basic') {
+          return response;
+        }
         const resClone = response.clone();
         caches.open(CACHE_NAME).then(cache => cache.put(event.request, resClone));
         return response;
