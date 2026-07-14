@@ -647,10 +647,13 @@ try {
   }
 }
 
+// ၁။ Scroll ဆွဲသည့်အခါ အပေါ်ပြန်တက်သည့် (FAB Up) ခလုတ်ကိုသာ ပြသရန်
 window.addEventListener('scroll', () => {
   document.getElementById('fabUp').classList.toggle('show', window.scrollY > 280);
-  
-  // ဖုန်းဖြင့် Scroll ဆွဲပါက ပွင့်နေသော Search Keyboard ကို အလိုအလျောက် ပိတ်ပေးရန်
+}, { passive: true });
+
+// ၂။ ဖုန်းမျက်နှာပြင်ကို လက်ဖြင့် အမှန်တကယ် ပွတ်ဆွဲ (Swipe/Touchmove) မှသာ Keyboard ကို ပိတ်ပေးရန်
+window.addEventListener('touchmove', () => {
   if (document.activeElement && document.activeElement.id === 'searchBar') {
     document.activeElement.blur();
   }
