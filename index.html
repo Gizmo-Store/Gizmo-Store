@@ -15,7 +15,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob: 'unsafe-inline';">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Gizmo">
@@ -67,11 +67,11 @@
       <img class="logo-mark" src="https://res.cloudinary.com/dfuyt9ycz/image/upload/v1782978015/Done_jpg_logo_jnvpf5.jpg" alt="Gizmo" width="36" height="36">
       <span class="logo-text">Gizmo Store</span>
     </a>
-    <div class="hdr-search">
+    <form class="hdr-search" onsubmit="event.preventDefault(); document.getElementById('searchBar').blur();">
       <span class="s-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
-      <input id="searchBar" type="text" placeholder="Search…" oninput="debounceSearch()" onkeypress="if(event.key==='Enter') this.blur();" autocomplete="off" spellcheck="false" aria-label="Search products">
+      <input id="searchBar" type="search" placeholder="Search…" oninput="debounceSearch()" autocomplete="off" spellcheck="false" aria-label="Search products">
       <button type="button" class="x-btn" id="clearBtn" onclick="clearSearch()" aria-label="Clear search">&times;</button>
-    </div>
+    </form>
   </div>
 </header>
 
@@ -141,7 +141,12 @@
     <div class="sk"><div class="sk-img-b sk-pulse sk-line"></div><div class="sk-body"><div class="sk-line sk-pulse" style="width:55%;"></div><div class="sk-line sk-pulse" style="width:80%;"></div><div class="sk-line sk-pulse" style="width:40%;"></div><div class="sk-btn-b sk-pulse"></div></div></div>
   </div>
 
-  <div class="empty" id="emptyState"><div class="ico">🔍</div><h3>No Results Found</h3><p>Try a different keyword or category.</p></div>
+  <div class="empty" id="emptyState">
+    <div class="ico">🔍</div>
+    <h3>No Results Found</h3>
+    <p>Try a different keyword or category.</p>
+    <button type="button" class="btn-secondary" style="max-width: 150px; margin: 15px auto 0;" onclick="clearSearch()">Clear Search</button>
+  </div>
 </div>
 <div id="lm-wrap"><button type="button" class="lm-btn" onclick="loadMore()">More Products ↓</button></div>
 
@@ -218,7 +223,7 @@
 </div>
 
 <div id="img-modal" class="modal" onclick="closeMod('img-modal')">
-  <img id="modal-img" src="" alt="Product" >
+  <img id="modal-img" src="" alt="Product" onclick="event.stopPropagation()">
 </div>
 
 <div id="details-modal" class="modal" onclick="closeMod('details-modal')">

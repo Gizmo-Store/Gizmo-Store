@@ -18,26 +18,28 @@ self.addEventListener('install', event => {
 
 // 🌐 Network-First & Security Logic
 self.addEventListener('fetch', event => {
-  // 🔒 Security & Method Check: GET request မဟုတ်လျှင် (သို့) Google API ဖြစ်လျှင် Cache မလုပ်ရန် တားမြစ်ခြင်း
-  if (event.request.method !== 'GET' || event.request.url.includes('script.google.com')) {
+  // 🔒 Security: Google API (Products & Tracking) များကို Service Worker မှ လုံးဝ Cache မလုပ်ရန် တားမြစ်ခြင်း (Data အမှားများ မပေါ်စေရန်)
+  if (event.request.url.includes('script.google.com')) {
     return; 
   }
 
   event.respondWith(
-    fetch(event.request)
-      .then(response => {
-        // Status 200 ဖြစ်မှသာ Cache ထဲထည့်မည် (Error Pages နှင့် Opaque Data များ ဖုန်း Storage မပြည့်စေရန်)
-        if (!response || response.status !== 200 || response.type !== 'basic') {
-          return response;
+    caches.match(event.request).then(cachedResponse => {
+      // ⚡ Cache ထဲတွင် ရှိပါက ချက်ချင်း ပြန်ပြပေးမည် (စောင့်စရာမလို)
+      const fetchPromise = fetch(event.request).then(networkResponse => {
+        // အောင်မြင်သော (Status 200) Basic Request ဖြစ်မှသာ Cache ထဲသို့ အသစ်ထပ်ထည့်မည်
+        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+          const resClone = networkResponse.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, resClone));
         }
-        const resClone = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(event.request, resClone));
-        return response;
-      })
-      .catch(() => {
-        // အင်တာနက် မရှိတော့မှသာ ဖုန်းထဲတွင် မှတ်ထားသော (Offline) Cache ကို ပြန်သုံးမည်
-        return caches.match(event.request);
-      })
+        return networkResponse;
+      }).catch(() => {
+        // အင်တာနက် ပြတ်တောက်နေပါက လျစ်လျူရှုမည်
+      });
+      
+      // Cache မရှိမှသာ Network ကို စောင့်မည်
+      return cachedResponse || fetchPromise;
+    })
   );
 });
 
