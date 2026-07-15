@@ -418,6 +418,9 @@ function onSearch(){
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
   
   applyFilter(q, false);
+
+  // ⚡ ပစ္စည်းအများကြီးရှိနေရင်တောင် မစောင့်ရဘဲ ဖျတ်ခနဲ ချက်ချင်း ထိပ်ဆုံးရောက်စေရန်
+  window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 function clearSearch(){
@@ -437,6 +440,11 @@ function clearSearch(){
     applyFilter(brand, true);
   } else {
     setTab('all', document.getElementById('tab-all'));
+  }
+
+  const secHead = document.querySelector('.sec-head');
+  if (secHead && window.scrollY > secHead.offsetTop) {
+    window.scrollTo({ top: Math.max(0, secHead.offsetTop - 70), behavior: 'instant' });
   }
 }
 
