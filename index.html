@@ -63,11 +63,11 @@
     </div>
   </div>
   <div class="hdr-row">
-    <a class="logo" href="/">
+    <a class="logo" href="#" onclick="event.preventDefault(); clearSearch(); window.scrollTo({top:0, behavior:'smooth'});">
       <img class="logo-mark" src="https://res.cloudinary.com/dfuyt9ycz/image/upload/v1782978015/Done_jpg_logo_jnvpf5.jpg" alt="Gizmo" width="36" height="36">
       <span class="logo-text">Gizmo Store</span>
     </a>
-    <form class="hdr-search" onsubmit="event.preventDefault(); document.getElementById('searchBar').blur();">
+    <form class="hdr-search" onsubmit="event.preventDefault(); clearTimeout(searchTimeout); onSearch(); document.getElementById('searchBar').blur();">
       <span class="s-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
       <input id="searchBar" type="search" placeholder="Search…" oninput="debounceSearch()" autocomplete="off" spellcheck="false" aria-label="Search products">
       <button type="button" class="x-btn" id="clearBtn" onclick="clearSearch()" aria-label="Clear search">&times;</button>
@@ -232,8 +232,13 @@
     <button type="button" class="modal-x" onclick="closeMod('details-modal')" aria-label="Close">&times;</button>
     <div class="modal-title" id="d-name"></div>
     <div class="det-price" id="d-price"></div>
-    <div class="det-desc" id="d-desc"></div>
-    <button type="button" class="btn-primary" style="width: 100%;" id="d-buy">Shop Now</button>
+    <!-- စာရှည်ပါက Scroll ဖြစ်စေရန် သီးသန့် Scroll Area ဖြင့် အုပ်ပေးလိုက်ခြင်း -->
+    <div class="det-scroll-area">
+      <div class="det-desc" id="d-desc"></div>
+    </div>
+    <div class="modal-footer-btn">
+      <button type="button" class="btn-primary" style="width: 100%;" id="d-buy">Shop Now</button>
+    </div>
   </div>
 </div>
 

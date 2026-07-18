@@ -340,7 +340,8 @@
       position:fixed; inset:0; z-index:400; display:flex; align-items:flex-end; justify-content:center; padding:0;
       background:rgba(0,0,0,0); visibility:hidden; pointer-events:none; transition:background var(--t);
     }
-    .modal.open {visibility:visible; pointer-events:auto; background:rgba(0,0,0,.6); backdrop-filter:blur(12px);}
+    /* touch-action: none ကို ထည့်သွင်းခြင်းဖြင့် iOS ပွတ်ဆွဲမှု (Swipe) ကို တားမြစ်မည် */
+    .modal.open {visibility:visible; pointer-events:auto; background:rgba(0,0,0,.6); backdrop-filter:blur(12px); touch-action: none;}
     @media(min-width:560px) {.modal {align-items:center; padding:20px}}
     
     .modal-card {
@@ -397,7 +398,36 @@
     #img-modal.open img {transform:scale(1); opacity:1}
 
     .det-price {font-size:21px; font-weight:800; color:var(--c-brand); margin:4px 0 14px}
-    .det-desc {font-size:13.5px; line-height:1.8; color:var(--c-sub); background:var(--c-surf2); padding:14px 16px; border-radius:var(--r-sm); white-space:pre-line; text-align:left; margin-bottom:18px;}
+    
+    /* 🌟 Product Description စာသားများအတွက် အသစ်ဖြည့်စွက်ထားသော CSS */
+    .det-scroll-area {
+      max-height: 45vh; /* စခရင်အမြင့်၏ ၄၅% သာ နေရာယူခွင့်ပြုမည် */
+      overflow-y: auto; /* စာရှည်ပါက Scroll ပေါ်လာမည် */
+      margin-bottom: 18px;
+      border-radius: var(--r-sm);
+      
+      /* အရေးကြီးသည် - အောက်ပါ ကုဒ်နှစ်ကြောင်းကို ထည့်သွင်းပါ */
+      touch-action: pan-y; /* ဒီအကွက်လေးထဲမှာတော့ အပေါ်အောက် ပွတ်ဆွဲခွင့်ပြုမည် */
+      -webkit-overflow-scrolling: touch; /* iOS တွင် ပွတ်ဆွဲရာ၌ ချောမွေ့သော Bounce effect ရစေမည် */
+
+      /* Scrollbar လေးများ သပ်ရပ်စေရန် */
+      scrollbar-width: thin;
+      scrollbar-color: rgba(185,28,28,.4) transparent;
+    }
+    .det-scroll-area::-webkit-scrollbar { width: 6px; }
+    .det-scroll-area::-webkit-scrollbar-thumb { background: rgba(185,28,28,.4); border-radius: 10px; }
+
+    .det-desc {
+      font-size:13.5px; line-height:1.8; color:var(--c-sub); 
+      background:var(--c-surf2); padding:14px 16px; 
+      border-radius:var(--r-sm); white-space:pre-line; text-align:left; 
+      margin-bottom: 0; /* Margin ကို Scroll Area ဆီသို့ ရွှေ့လိုက်ပါသည် */
+    }
+    
+    /* Buy Button ကို အောက်ခြေတွင် ကပ်နေစေရန် */
+    .modal-footer-btn {
+      margin-top: auto;
+    }
 
     /* Track Timeline */
     .cust-chip {display:flex; justify-content:space-between; align-items:center; background:var(--c-surf2); border:1px solid var(--c-border); border-radius:var(--r-sm); padding:12px 14px; margin-bottom:16px; font-size:13.5px; font-weight:600;}
