@@ -314,12 +314,6 @@ function setTab(brand, el){
   if (el) el.classList.add('on');
   
   applyFilter(brand, true);
-
-  // 🌟 Category ပြောင်းလိုက်တိုင်း Product စာရင်း၏ ထိပ်ဆုံးသို့ အလိုအလျောက် Scroll ဆွဲတင်ပေးရန် (UX)
-  const secHead = document.querySelector('.sec-head');
-  if(secHead && window.scrollY > secHead.offsetTop) {
-    window.scrollTo({ top: secHead.offsetTop - 70, behavior: 'smooth' });
-  }
 }
 
 function applyFilter(q, isBrand){
@@ -439,12 +433,11 @@ function clearSearch(){
     const brand = activeTab.id.replace('tab-', '');
     applyFilter(brand, true);
   } else {
-    setTab('all', document.getElementById('tab-all'));
-  }
-
-  const secHead = document.querySelector('.sec-head');
-  if (secHead && window.scrollY > secHead.offsetTop) {
-    window.scrollTo({ top: Math.max(0, secHead.offsetTop - 70), behavior: 'instant' });
+    // Scroll ခုန်တက်ခြင်းမဖြစ်စေရန် setTab ကို တိုက်ရိုက်မခေါ်ဘဲ filter ကိုသာ ပြောင်းပါမည်
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+    const allTab = document.getElementById('tab-all');
+    if (allTab) allTab.classList.add('on');
+    applyFilter('all', true);
   }
 }
 

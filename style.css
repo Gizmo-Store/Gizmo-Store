@@ -52,9 +52,7 @@
     }
     body.locked {
       overflow: hidden;
-      position: fixed; 
-      width: 100%;
-      height: 100%;
+      /* position: fixed ကို ဖြုတ်လိုက်ခြင်းဖြင့် Modal အဖွင့်/အပိတ်တွင် Scroll အပေါ်ဆုံးသို့ ခုန်တက်သွားသည့် ပြဿနာကို ဖြေရှင်းထားပါသည် */
     }
     img {display:block; max-width:100%; height:auto;}
     button, input, select, textarea {font:inherit;}
@@ -213,7 +211,7 @@
     .sec-head small {font-size:12.5px; color:var(--c-muted); font-weight:500}
 
     /* ── Grid ── */
-    .grid-area { max-width:1100px; margin:14px auto 0; padding:0 12px 50px; width: 100%; }
+    .grid-area { max-width:1100px; margin:14px auto 0; padding:0 12px 50px; width: 100%; min-height: 65vh; }
     .prd-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     
     @media (min-width: 640px) {
