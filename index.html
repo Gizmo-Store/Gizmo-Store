@@ -205,24 +205,31 @@
     <div class="modal-title">Our Story</div>
     <div class="modal-divider"></div>
     
-    <div style="font-size:14px; line-height:1.8; color:var(--c-sub); text-align: left;">
-      <h4 style="color:var(--c-text); margin-bottom:6px; font-size:15px; font-weight:800;">Curated for the Tech Elite. Established 2017.</h4>
-      <p style="margin-bottom:20px;">Since our inception in 2017, Gizmo has been the premier destination for high-end mobile accessories, premium IT products, luxury gadgets, and elite Everyday Carry (EDC) gear. We cater exclusively to a niche community of tech enthusiasts, geeks, and professionals who demand nothing less than perfection from their tools.</p>
+    <!-- စာရှည်ပါက Scroll ဖြစ်စေရန် သီးသန့် Scroll Area ဖြင့် အုပ်ပေးလိုက်ခြင်း -->
+    <div class="det-scroll-area" style="margin-bottom: 16px;">
+      <div style="font-size:14px; line-height:1.8; color:var(--c-sub); text-align: left;">
+        <h4 style="color:var(--c-text); margin-bottom:6px; font-size:15px; font-weight:800;">Curated for the Tech Elite. Established 2017.</h4>
+        <p style="margin-bottom:20px;">Since our inception in 2017, Gizmo has been the premier destination for high-end mobile accessories, premium IT products, luxury gadgets, and elite Everyday Carry (EDC) gear. We cater exclusively to a niche community of tech enthusiasts, geeks, and professionals who demand nothing less than perfection from their tools.</p>
 
-      <h4 style="color:var(--c-text); margin-bottom:6px; font-size:15px; font-weight:800;">The Pioneer of Premium Gear in Myanmar</h4>
-      <p style="margin-bottom:20px;">We don’t just follow the market; we shaped it. As a true pioneer in Myanmar, Gizmo was the very first to introduce many of the world’s most coveted premium brands and cutting-edge tech subcultures to the country. We laid the groundwork, opening the door for local enthusiasts to access elite gear that was once impossible to find locally.</p>
+        <h4 style="color:var(--c-text); margin-bottom:6px; font-size:15px; font-weight:800;">The Pioneer of Premium Gear in Myanmar</h4>
+        <p style="margin-bottom:20px;">We don’t just follow the market; we shaped it. As a true pioneer in Myanmar, Gizmo was the very first to introduce many of the world’s most coveted premium brands and cutting-edge tech subcultures to the country. We laid the groundwork, opening the door for local enthusiasts to access elite gear that was once impossible to find locally.</p>
 
-      <h4 style="color:var(--c-text); margin-bottom:6px; font-size:15px; font-weight:800;">Guaranteed Authenticity. Premium Craftsmanship.</h4>
-      <p style="margin-bottom:20px;">We believe that true luxury lies in authenticity and premium engineering. Every item in our catalog is guaranteed 100% authentic, sourced directly to meet the exacting standards of our affluent clientele. We specialize in world-class brands known for their minimalist aesthetics and structural mastery, such as <em>Alpaka, Bellroy, Aer, and Nomatic</em>.</p>
+        <h4 style="color:var(--c-text); margin-bottom:6px; font-size:15px; font-weight:800;">Guaranteed Authenticity. Premium Craftsmanship.</h4>
+        <p style="margin-bottom:20px;">We believe that true luxury lies in authenticity and premium engineering. Every item in our catalog is guaranteed 100% authentic, sourced directly to meet the exacting standards of our affluent clientele. We specialize in world-class brands known for their minimalist aesthetics and structural mastery, such as <em>Alpaka, Bellroy, Aer, and Nomatic</em>.</p>
 
-      <p style="font-weight:700; color:var(--c-brand); text-align:center; font-size:15px; margin-bottom:12px;">For those who live on the cutting edge—welcome to your ultimate gear collective.</p>
+        <p style="font-weight:700; color:var(--c-brand); text-align:center; font-size:15px; margin-bottom:12px;">For those who live on the cutting edge—welcome to your ultimate gear collective.</p>
+      </div>
     </div>
 
-    <button type="button" class="btn-secondary" onclick="closeMod('about-modal')">Close</button>
+    <!-- Close Button ကို အောက်ခြေတွင် ကပ်နေစေရန် -->
+    <div class="modal-footer-btn">
+      <button type="button" class="btn-secondary" onclick="closeMod('about-modal')" style="margin-top: 0;">Close</button>
+    </div>
   </div>
 </div>
 
 <div id="img-modal" class="modal" onclick="closeMod('img-modal')">
+  <button type="button" class="modal-x" style="position: absolute; top: 20px; right: 20px; z-index: 10; background: var(--c-surface);" onclick="closeMod('img-modal')" aria-label="Close">&times;</button>
   <img id="modal-img" src="" alt="Product" onclick="event.stopPropagation()">
 </div>
 

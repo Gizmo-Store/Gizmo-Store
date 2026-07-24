@@ -429,7 +429,14 @@
 
     /* Track Timeline */
     .cust-chip {display:flex; justify-content:space-between; align-items:center; background:var(--c-surf2); border:1px solid var(--c-border); border-radius:var(--r-sm); padding:12px 14px; margin-bottom:16px; font-size:13.5px; font-weight:600;}
-    .parcels-scroll {max-height:50vh; overflow-y:auto; scrollbar-width:thin}
+    .parcels-scroll {
+      max-height: 50vh; 
+      overflow-y: auto; 
+      scrollbar-width: thin;
+      /* iOS & Android တွင် ပွတ်ဆွဲရာ၌ ချောမွေ့စေရန် */
+      touch-action: pan-y; 
+      -webkit-overflow-scrolling: touch;
+    }
     .p-item {background:var(--c-bg); border:1px solid var(--c-border); border-radius:var(--r-md); padding:16px; margin-bottom:10px;}
     .p-item-hdr {display:flex; justify-content:space-between; align-items:flex-start; padding-bottom:10px; margin-bottom:14px; border-bottom:1px dashed var(--c-border);}
     .p-title {font-size:13px; font-weight:800; color:var(--c-brand)}
