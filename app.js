@@ -210,7 +210,7 @@ function toast(msg, ok=false){
    Data Fetching & Rendering Engine
 ────────────────────────────────────────────── */
 async function fetchProducts() {
-  const URL = 'https://script.google.com/macros/s/AKfycbz659VRQoUdRfXIEg0denAkFZ-0bYjXIUl5Aoq7YFAXuhZXf4j7lr4Z1apDP8Bqckf_/exec';
+  const URL = 'https://script.google.com/macros/s/AKfycbwn7qto1ET273hnzTZsefoV8-P_1gAVt_iIBDpw5uYpKc9SuOB9t5uaV2OBfBaH5mfc/exec';
 
   // Cache နာမည်ကို ပြောင်းထားပါသည် (Cache အဟောင်းများ ရှင်းရန်)
   const cache = localStorage.getItem('gz_cache_v2');

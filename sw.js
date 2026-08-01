@@ -18,8 +18,8 @@ self.addEventListener('install', event => {
 
 // 🌐 Network-First & Security Logic
 self.addEventListener('fetch', event => {
-  // 🔒 Security: Google API (Products & Tracking) များကို Service Worker မှ လုံးဝ Cache မလုပ်ရန် တားမြစ်ခြင်း (Data အမှားများ မပေါ်စေရန်)
-  if (event.request.url.includes('script.google.com')) {
+  // 🔒 Security: Google API နှင့် Chrome Extensions များကို Cache မလုပ်ရန် တားမြစ်ခြင်း
+  if (event.request.url.includes('script.google.com') || !event.request.url.startsWith('http')) {
     return; 
   }
 
