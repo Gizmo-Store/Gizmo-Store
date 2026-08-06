@@ -37,8 +37,12 @@ self.addEventListener('fetch', event => {
         // အင်တာနက် ပြတ်တောက်နေပါက လျစ်လျူရှုမည်
       });
       
-      // Cache မရှိမှသာ Network ကို စောင့်မည်
-      return cachedResponse || fetchPromise;
+      // Cache ရှိနေရင်တောင် နောက်ကွယ်ကနေ Network Fetch လုပ်တာ မရပ်သွားစေဖို့ event.waitUntil ဖြင့် ထိန်းထားပေးမည်
+      if (cachedResponse) {
+        event.waitUntil(fetchPromise); 
+        return cachedResponse;
+      }
+      return fetchPromise;
     })
   );
 });

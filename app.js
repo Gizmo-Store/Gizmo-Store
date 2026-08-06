@@ -47,6 +47,10 @@ function initSlider() {
   firstClone.removeAttribute('loading');
   lastClone.removeAttribute('loading');
   
+  // Screen reader များ clone ကို ထပ်မဖတ်စေရန် တားဆီးခြင်း (A11y Fix)
+  firstClone.setAttribute('aria-hidden', 'true');
+  lastClone.setAttribute('aria-hidden', 'true');
+  
   track.appendChild(firstClone);
   track.insertBefore(lastClone, slides[0]);
 
@@ -179,6 +183,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const isDark = document.body.classList.contains('dark');
   const ft = document.getElementById('fabTheme');
   if(ft) ft.textContent = isDark ? '☀️' : '🌙';
+
+  // Event Delegation for Product Cards
+  document.getElementById('productGrid').addEventListener('click', (e) => {
+    const cardEl = e.target.closest('.prd-card');
+    if (!cardEl) return;
+    
+    // HTML တွင်ရေးထားသော class အမည်အတိုင်း (c-btn-info / c-btn-buy) ပြင်ဆင်စစ်ဆေးခြင်း
+    if (e.target.closest('.c-btn-info') || e.target.classList.contains('c-btn-info')) {
+      viewDetails(cardEl);
+    } else if (e.target.closest('.c-btn-buy') || e.target.classList.contains('c-btn-buy')) {
+      openContact(cardEl.dataset.title);
+    }
+  });
 });
 
 function applyDark(on){
@@ -360,7 +377,7 @@ function renderGrid() {
     
     el.innerHTML = `
       <div class="card-thumb">
-        <img loading="lazy" src="${imgSrc}" alt="${title}" width="200" height="200"
+        <img loading="lazy" decoding="async" src="${imgSrc}" alt="${title}" width="200" height="200"
           onerror="this.onerror=null; this.src='${fallbackImg}'"
           onclick="viewImg(this.src)"
           role="button" tabindex="0" aria-label="Zoom image"
@@ -371,8 +388,8 @@ function renderGrid() {
         <div class="card-name">${title}</div>
         <div class="card-price">${price}</div>
         <div class="card-btns">
-          <button type="button" class="c-btn-info" onclick="viewDetails(this.closest('.prd-card'))" aria-label="View Details">Detail</button>
-          <button type="button" class="c-btn-buy" onclick="openContact(this.closest('.prd-card').dataset.title)" aria-label="Shop Now">Shop Now</button>
+          <button type="button" class="c-btn-info" aria-label="View Details">Detail</button>
+          <button type="button" class="c-btn-buy" aria-label="Shop Now">Shop Now</button>
         </div>
       </div>`;
       
@@ -644,8 +661,15 @@ try {
   }
 }
 
+let isScrolling = false;
 window.addEventListener('scroll', () => {
-  document.getElementById('fabUp').classList.toggle('show', window.scrollY > 280);
+  if (!isScrolling) {
+    window.requestAnimationFrame(() => {
+      document.getElementById('fabUp').classList.toggle('show', window.scrollY > 280);
+      isScrolling = false;
+    });
+    isScrolling = true;
+  }
 }, { passive: true });
 
 // ဖုန်းဖြင့် စခရင်ကို စတင်ထိတွေ့လိုက်သည်နှင့် Keyboard ကို တစ်ကြိမ်တည်း ပိတ်ပေးရန် (Performance ပိုကောင်းစေရန်)
