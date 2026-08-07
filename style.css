@@ -199,7 +199,7 @@
     .chip {
       flex: 0 0 auto; padding:9px 18px; border-radius:50px; border:1.5px solid var(--c-border); background:var(--c-surface);
       color:var(--c-sub); font-size:13px; font-weight:600; cursor:pointer; text-align:center;
-      box-shadow:var(--sh-xs); transition:all var(--t) var(--ease); backdrop-filter:blur(12px);
+      box-shadow:var(--sh-xs); transition:all var(--t) var(--ease);
     }
     .chip:hover, .chip:focus-visible {border-color:var(--c-brand); color:var(--c-brand)}
     .chip.on {background:var(--c-brand); border-color:var(--c-brand); color:#fff; box-shadow:0 8px 24px rgba(185,28,28,.35);}
@@ -236,7 +236,7 @@
     .prd-card {
       background:var(--c-surface); border-radius:20px; border:1px solid rgba(185,28,28,.12);
       display:flex; flex-direction:column; overflow:hidden; box-shadow:var(--sh-xs);
-      transition:transform .3s var(--ease), box-shadow .3s var(--ease); backdrop-filter:blur(8px);
+      transition:transform .3s var(--ease), box-shadow .3s var(--ease);
       contain:content; animation:fadeUp .45s var(--ease) both;
     }
     @keyframes fadeUp {from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:translateY(0)}}
@@ -478,8 +478,8 @@
     }
     .tp.show {transform:translateY(0) scale(1); opacity:1}
     
-    ::-webkit-scrollbar {width:8px}
-    ::-webkit-scrollbar-thumb {background:rgba(185,28,28,.4); border-radius:20px}
+    html::-webkit-scrollbar, .modal-card::-webkit-scrollbar {width:8px}
+    html::-webkit-scrollbar-thumb, .modal-card::-webkit-scrollbar-thumb {background:rgba(185,28,28,.4); border-radius:20px}
 
         /* မူလအပြင်ဘက်မှာရှိနေတဲ့ :hover တွေကို ဖျက်ပြီး ဒီထဲကို စုထည့်လိုက်ပါ */
 @media (hover: hover) {

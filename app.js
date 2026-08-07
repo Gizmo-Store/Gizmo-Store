@@ -1,20 +1,19 @@
 /* ──────────────────────────────────────────────
-   Optimized App Logic & Data-Driven Rendering
+   Optimized App Logic & Performance-Engineered Rendering
 ────────────────────────────────────────────── */
 
-// 🌙 Light/Dark Mode နှင့် အလိုအလျောက် လိုက်ဖက်မည့် Transparent Fallback Image
 const fallbackImg = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27300%27 viewBox=%270 0 300 300%27%3E%3Crect width=%27300%27 height=%27300%27 fill=%27transparent%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 font-family=%27sans-serif%27 font-weight=%27bold%27 font-size=%2722%27 fill=%27%239ca3af%27%3ENo Image%3C/text%3E%3C/svg%3E";
 
-// State Management
 let allProducts = [];
 let filteredProducts = [];
-let trackingData = [];
 let displayLimit = 8;
 const PER_PAGE = 8;
 let orderProd = '';
 let searchTimeout;
 
-// Secure Escaping
+// Cached DOM Elements for Performance
+let fabUpEl = null;
+
 const esc = (t) => (t || '').toString().replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
 
 function normalizePhone(p) {
@@ -43,11 +42,11 @@ function initSlider() {
   firstClone.id = 'first-clone';
   lastClone.id = 'last-clone';
   
-  // Clone လုပ်ထားသောပုံများ ချက်ချင်းပေါ်စေရန် Lazy Loading ကို ဖယ်ရှားခြင်း
-  firstClone.removeAttribute('loading');
-  lastClone.removeAttribute('loading');
+  const firstImg = firstClone.querySelector('img');
+  const lastImg = lastClone.querySelector('img');
+  if (firstImg) firstImg.removeAttribute('loading');
+  if (lastImg) lastImg.removeAttribute('loading');
   
-  // Screen reader များ clone ကို ထပ်မဖတ်စေရန် တားဆီးခြင်း (A11y Fix)
   firstClone.setAttribute('aria-hidden', 'true');
   lastClone.setAttribute('aria-hidden', 'true');
   
@@ -57,10 +56,11 @@ function initSlider() {
   let currentSlide = 1; 
   let sliderInterval;
   let isTransitioning = false; 
-  let transitionTimeout; // Added: Fail-safe timeout
+  let transitionTimeout;
 
   track.style.transform = `translateX(-${currentSlide * 100}%)`;
 
+  dotsContainer.innerHTML = '';
   for (let i = 0; i < totalOriginalSlides; i++) {
     const dot = document.createElement('div');
     dot.classList.add('dot');
@@ -70,9 +70,11 @@ function initSlider() {
     if (i === 0) dot.classList.add('active');
     
     dot.addEventListener('click', () => { if(!isTransitioning) goToSlide(i + 1); });
-dot.addEventListener('keydown', (e) => { 
-  if (e.key === 'Enter' && !isTransitioning) goToSlide(i + 1); 
-});
+    dot.addEventListener('keydown', (e) => { 
+      if (e.key === 'Enter' && !isTransitioning) goToSlide(i + 1); 
+    });
+
+    dotsContainer.appendChild(dot);
   }
   const dots = document.querySelectorAll('.slider-dots .dot');
 
@@ -93,16 +95,12 @@ dot.addEventListener('keydown', (e) => {
     updateDots();
     resetInterval();
 
-    // FIXED: Fail-safe unlocker if browser cancels the transition
     clearTimeout(transitionTimeout);
     transitionTimeout = setTimeout(() => {
-      if (isTransitioning) {
-        handleBoundary();
-      }
-    }, 550); // 50ms buffer after the 0.5s transition
+      if (isTransitioning) handleBoundary();
+    }, 550);
   }
 
-  // FIXED: Extracted boundary check to a reusable function
   function handleBoundary() {
     isTransitioning = false;
     if (track.children[currentSlide] && track.children[currentSlide].id === 'first-clone') {
@@ -115,6 +113,7 @@ dot.addEventListener('keydown', (e) => {
       currentSlide = totalOriginalSlides; 
       track.style.transform = `translateX(-${currentSlide * 100}%)`;
     }
+    updateDots();
   }
 
   let startX = 0;
@@ -143,10 +142,9 @@ dot.addEventListener('keydown', (e) => {
 
   track.addEventListener('transitionend', handleBoundary);
 
- function resetInterval() {
+  function resetInterval() {
     clearInterval(sliderInterval);
     sliderInterval = setInterval(() => {
-      // Document (Browser Tab) ပွင့်နေမှသာ Slide ကို ရွှေ့ပါမယ်
       const hero = document.getElementById('mainSlider');
       if (hero && hero.style.display !== 'none' && !document.hidden) {
         goToSlide(currentSlide + 1);
@@ -157,39 +155,35 @@ dot.addEventListener('keydown', (e) => {
   resetInterval();
   
   let resizeTimer;
-let lastWidth = window.innerWidth; // Add this line
+  let lastWidth = window.innerWidth;
 
-window.addEventListener('resize', () => {
-  if (window.innerWidth === lastWidth) return; 
-  lastWidth = window.innerWidth;
-  
-  clearTimeout(resizeTimer);
-  // Transition ကို ချက်ချင်း ပိတ်လိုက်ပါ
-  const track = document.getElementById('sliderTrack');
-  track.style.transition = 'none';
-  
-  resizeTimer = setTimeout(() => {
-    track.style.transform = `translateX(-${currentSlide * 100}%)`;
-    isTransitioning = false;
-  }, 50); // အချိန်ကို 150 မှ 50 သို့ လျှော့ချပါ
-});
+  window.addEventListener('resize', () => {
+    if (window.innerWidth === lastWidth) return; 
+    lastWidth = window.innerWidth;
+    
+    clearTimeout(resizeTimer);
+    track.style.transition = 'none';
+    
+    resizeTimer = setTimeout(() => {
+      track.style.transform = `translateX(-${currentSlide * 100}%)`;
+      isTransitioning = false;
+    }, 50);
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  initSlider(); 
+  fabUpEl = document.getElementById('fabUp');
+  // initSlider() ကို ဤနေရာတွင် မခေါ်တော့ပါ။ API မှ Slider ပုံများရောက်လာမှ ခေါ်ပါမည်။
   fetchProducts();
   
-  // Theme Toggle Button ပုံစံ မှန်ကန်စေရန်
   const isDark = document.body.classList.contains('dark');
   const ft = document.getElementById('fabTheme');
   if(ft) ft.textContent = isDark ? '☀️' : '🌙';
 
-  // Event Delegation for Product Cards
   document.getElementById('productGrid').addEventListener('click', (e) => {
     const cardEl = e.target.closest('.prd-card');
     if (!cardEl) return;
     
-    // HTML တွင်ရေးထားသော class အမည်အတိုင်း (c-btn-info / c-btn-buy) ပြင်ဆင်စစ်ဆေးခြင်း
     if (e.target.closest('.c-btn-info') || e.target.classList.contains('c-btn-info')) {
       viewDetails(cardEl);
     } else if (e.target.closest('.c-btn-buy') || e.target.classList.contains('c-btn-buy')) {
@@ -228,8 +222,6 @@ function toast(msg, ok=false){
 ────────────────────────────────────────────── */
 async function fetchProducts() {
   const URL = 'https://script.google.com/macros/s/AKfycbwn7qto1ET273hnzTZsefoV8-P_1gAVt_iIBDpw5uYpKc9SuOB9t5uaV2OBfBaH5mfc/exec';
-
-  // Cache နာမည်ကို ပြောင်းထားပါသည် (Cache အဟောင်းများ ရှင်းရန်)
   const cache = localStorage.getItem('gz_cache_v2');
   let useCache = false;
 
@@ -248,41 +240,35 @@ async function fetchProducts() {
     try {
       const cachedData = JSON.parse(cache);
       const now = Date.now();
-      // Cache သက်တမ်းကို ၃ နာရီအစား ၃ မိနစ်သို့ လျှော့ချ
       const CACHE_EXPIRY = 3 * 60 * 1000; 
 
       if (cachedData.timestamp && (now - cachedData.timestamp < CACHE_EXPIRY)) {
-        if (cachedData.products) {
+        if (Array.isArray(cachedData.products)) {
           allProducts = cachedData.products;
+          
+          // 🌟 Cache ထဲတွင် Slider Data ပါလျှင် ယူသုံးပါမည်
+          if (Array.isArray(cachedData.sliders) && cachedData.sliders.length > 0) {
+            renderSliders(cachedData.sliders);
+          }
+          
           renderInitialData(); 
           useCache = true;
           
-          //  Pro UX (Stale-While-Revalidate): Data အဟောင်းကို ချက်ချင်းပြထားသော်လည်း၊ နောက်ကွယ်မှ Data အသစ်ကို တိတ်တဆိတ် ထပ်ယူထားမည်။
           fetch(URL).then(res => res.json()).then(newData => {
-            if (newData.products && newData.products.length > 0) {
+            if (newData && Array.isArray(newData.products) && newData.products.length > 0) {
               localStorage.setItem('gz_cache_v2', JSON.stringify({
                 timestamp: Date.now(),
-                products: newData.products
+                products: newData.products,
+                sliders: newData.sliders || [] 
               }));
-              allProducts = newData.products;
-              
-              // 🚀 Pro UX: Customer ဖတ်နေသော နေရာမပျက်စေဘဲ ဈေးနှုန်းနှင့် ပစ္စည်းအသစ်များကိုသာ တိတ်တဆိတ် Update လုပ်ပေးမည်
-              const currentQ = document.getElementById('searchBar').value.toLowerCase().trim();
-              const activeTab = document.querySelector('.chip.on');
-              const brand = activeTab ? activeTab.id.replace('tab-', '') : 'all';
-              
-              filteredProducts = allProducts.filter(item => {
-                const brandStr = (item.brand || '').toLowerCase().trim();
-                const titleStr = (item.title || '').toLowerCase();
-                if (currentQ) {
-                  return titleStr.replace(/\s+/g, '').includes(currentQ.replace(/\s+/g, '')) || brandStr.includes(currentQ);
-                } else {
-                  return brand === 'all' || brandStr === brand; 
-                }
-              });
-              renderGrid(); // မျက်နှာပြင်ပေါ်ရှိ စာရင်းကို အသစ်ပြောင်းမည်
+
+              // 🌟 မျက်နှာပြင်မှာ Slider လုံးဝမရှိသေးရင် (Cache အဟောင်းကြောင့်) အသစ်ရလာတဲ့ Slider ကို ချက်ချင်းပြပေးမည်
+              const track = document.getElementById('sliderTrack');
+              if (track && track.children.length === 0 && Array.isArray(newData.sliders) && newData.sliders.length > 0) {
+                renderSliders(newData.sliders);
+              }
             }
-          }).catch(() => {}); // Error မပြဘဲ ကျော်သွားမည်
+          }).catch(() => {});
         }
       } else {
         localStorage.removeItem('gz_cache_v2'); 
@@ -293,15 +279,24 @@ async function fetchProducts() {
   if (!useCache) {
     try {
       const response = await fetch(URL);
+      if (!response.ok) throw new Error('Network error');
       const data = await response.json();
 
-      data.timestamp = Date.now();
-      localStorage.setItem('gz_cache_v2', JSON.stringify({
-        timestamp: data.timestamp,
-        products: data.products
-      }));
-
-      allProducts = Array.isArray(data.products) ? data.products : [];
+      if (data && Array.isArray(data.products)) {
+        localStorage.setItem('gz_cache_v2', JSON.stringify({
+          timestamp: Date.now(),
+          products: data.products,
+          sliders: data.sliders || [] // 🌟 API မှလာသော Slider Data ကိုပါ သိမ်းမည်
+        }));
+        allProducts = data.products;
+        
+        // 🌟 API မှ Slider Data ရလာလျှင် Render လုပ်မည်
+        if (Array.isArray(data.sliders) && data.sliders.length > 0) {
+          renderSliders(data.sliders);
+        }
+      } else {
+        allProducts = [];
+      }
       renderInitialData(); 
 
     } catch (e) {
@@ -320,6 +315,31 @@ async function fetchProducts() {
   }
 }
 
+// 🌟 Slider များကို HTML ထဲသို့ ဖြည့်သွင်းပေးမည့် Function အသစ်
+function renderSliders(slidersData) {
+  const track = document.getElementById('sliderTrack');
+  if (!track) return;
+  
+  track.innerHTML = ''; // အဟောင်းများရှိလျှင် ရှင်းလင်းမည်
+  
+  slidersData.forEach((slide, index) => {
+    // Data မပါလာခဲ့လျှင် Fallback Image ကို သုံးပါမည်
+    const desktopImg = slide.desktop ? esc(slide.desktop) : fallbackImg;
+    const mobileImg = slide.mobile ? esc(slide.mobile) : desktopImg;
+    
+    const picture = document.createElement('picture');
+    picture.className = 'slide';
+    picture.innerHTML = `
+      <source media="(min-width: 1024px)" srcset="${desktopImg}">
+      <img src="${mobileImg}" alt="Promo ${index + 1}" fetchpriority="${index === 0 ? 'high' : 'auto'}" width="800" height="450" draggable="false">
+    `;
+    track.appendChild(picture);
+  });
+
+  // ပုံများ HTML ထဲ ရောက်သွားပြီဖြစ်သဖြင့် Slider ကို စတင်အလုပ်လုပ်စေပါမည်
+  initSlider();
+}
+
 function setTab(brand, el){
   document.getElementById('searchBar').value = '';
   document.getElementById('clearBtn').style.display = 'none';
@@ -334,8 +354,6 @@ function setTab(brand, el){
 }
 
 function applyFilter(q, isBrand){
-  // ဤနေရာတွင် ရှိနေသော Early Return (if return) ကို ဖယ်ရှားထားပါသည်
-  
   const cleanQ = q.replace(/\s+/g, ''); 
   
   filteredProducts = allProducts.filter(item => {
@@ -351,29 +369,32 @@ function applyFilter(q, isBrand){
   });
   
   displayLimit = PER_PAGE;
-  renderGrid();
+  renderGrid(false); // Full render on filter change
 }
 
-function renderGrid() {
+// PERFORMANCE OPTIMIZATION: Incremental Append on loadMore
+function renderGrid(appendOnly = false) {
   const g = document.getElementById('productGrid');
-  g.innerHTML = '';
   
-  // အသစ်ပေါင်းထည့်ထားသော Fragment (Memory ထဲမှာ အရင်ဆောက်ရန်)
+  if (!appendOnly) {
+    g.innerHTML = '';
+  }
+  
   const fragment = document.createDocumentFragment();
-  const itemsToShow = filteredProducts.slice(0, displayLimit);
+  const startIndex = appendOnly ? displayLimit - PER_PAGE : 0;
+  const itemsToShow = filteredProducts.slice(startIndex, displayLimit);
   
   itemsToShow.forEach((item) => {
     const title = esc(item.title);
     const price = esc(item.price);
     const desc = esc(item.desc);
-    
     const imgSrc = item.img ? esc(item.img) : fallbackImg;
     
     const el = document.createElement('div');
     el.className = 'prd-card';
-    el.dataset.title = title;
-    el.dataset.price = price;
-    el.dataset.desc = desc;
+    el.dataset.title = item.title || '';
+    el.dataset.price = item.price || '';
+    el.dataset.desc = item.desc || '';
     
     el.innerHTML = `
       <div class="card-thumb">
@@ -381,7 +402,7 @@ function renderGrid() {
           onerror="this.onerror=null; this.src='${fallbackImg}'"
           onclick="viewImg(this.src)"
           role="button" tabindex="0" aria-label="Zoom image"
-          onkeydown="if(event.key==='Enter') viewImg(this.src)">
+          onkeydown="if(event.key==='Enter'||event.key===' ') viewImg(this.src)">
       </div>
       <div class="card-body">
         <div class="card-brand">${esc(item.brand)}</div>
@@ -393,11 +414,9 @@ function renderGrid() {
         </div>
       </div>`;
       
-    // Browser UI ကို တိုက်ရိုက်မပို့ဘဲ Fragment ထဲကို အရင်ထည့်ပါ
     fragment.appendChild(el);
   });
 
-  // Fragment ကိုမှ UI ပေါ်ကို တစ်ခါတည်း အပြီးထည့်လိုက်ပါ
   g.appendChild(fragment);
 
   document.getElementById('lm-wrap').style.display = filteredProducts.length > displayLimit ? 'block' : 'none';
@@ -405,9 +424,10 @@ function renderGrid() {
   const cnt = document.getElementById('prod-count');
   cnt.textContent = filteredProducts.length ? `: Showing ${Math.min(displayLimit, filteredProducts.length)} of ${filteredProducts.length}` : '';
 }
+
 function loadMore(){
   displayLimit += PER_PAGE;
-  renderGrid();
+  renderGrid(true); // Append new items only!
 }
 
 function debounceSearch() {
@@ -429,18 +449,15 @@ function onSearch(){
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
   
   applyFilter(q, false);
-
-  // ⚡ ပစ္စည်းအများကြီးရှိနေရင်တောင် မစောင့်ရဘဲ ဖျတ်ခနဲ ချက်ချင်း ထိပ်ဆုံးရောက်စေရန်
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 function clearSearch(){
-  clearTimeout(searchTimeout); // နောက်ကွယ်က ရှာဖွေနေမှုကို ချက်ချင်းရပ်ပစ်ရန်
+  clearTimeout(searchTimeout);
   const searchInput = document.getElementById('searchBar');
   searchInput.value = '';
   document.getElementById('clearBtn').style.display = 'none';
-  
-  searchInput.blur(); // Dismisses Keyboard on Mobile
+  searchInput.blur();
   
   const hero = document.getElementById('mainSlider');
   if (hero) hero.style.display = 'block'; 
@@ -450,7 +467,6 @@ function clearSearch(){
     const brand = activeTab.id.replace('tab-', '');
     applyFilter(brand, true);
   } else {
-    // Scroll ခုန်တက်ခြင်းမဖြစ်စေရန် setTab ကို တိုက်ရိုက်မခေါ်ဘဲ filter ကိုသာ ပြောင်းပါမည်
     document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
     const allTab = document.getElementById('tab-all');
     if (allTab) allTab.classList.add('on');
@@ -472,7 +488,6 @@ function openMod(id) {
   document.getElementById(id).classList.add('open');
   document.body.classList.add('locked');
 
-  // ⌨️ Track Modal ပွင့်လာပါက Keyboard အသင့်ပွင့်လာစေရန် အလိုအလျောက် Focus လုပ်ပေးခြင်း
   if (id === 'track-modal') {
     setTimeout(() => {
       const trackInp = document.getElementById('trackInp');
@@ -482,13 +497,13 @@ function openMod(id) {
 }
 
 function closeMod(id) {
-  document.getElementById(id).classList.remove('open');
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('open');
   document.body.classList.remove('locked');
   if (history.state && history.state.modal === id) {
     history.back();
   }
   
-  // Professional Form Reset: Track Modal ပိတ်လိုက်တိုင်း ဖုန်းနံပါတ်ဟောင်းကို ဖျက်ပေးရန်
   if (id === 'track-modal') {
     const trackInput = document.getElementById('trackInp');
     if (trackInput) trackInput.value = '';
@@ -503,8 +518,6 @@ window.addEventListener('popstate', () => {
   }
 });
 
-
-// ⌨️ Esc Key နှိပ်လျှင် ပွင့်နေသော Modal ကို အလိုအလျောက်ပိတ်စေရန်
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     const openModal = document.querySelector('.modal.open');
@@ -532,11 +545,11 @@ function openContact(title){
 }
 
 function doPlatform(p){
-  const tgQuery = orderProd ? '?text=' + encodeURIComponent('Hi, I want to inquire about: ' + orderProd) : '';
+  const textMsg = orderProd ? 'Hi, I want to inquire about: ' + orderProd : 'Hi, I would like to inquire about your products.';
   if (p === 'messenger') {
-    window.open('https://www.facebook.com/share/1UdKJrfqfP/?mibextid=wwXIfr', '_blank', 'noopener,noreferrer');
+    window.open('https://m.me/1UdKJrfqfP', '_blank', 'noopener,noreferrer');
   } else if (p === 'telegram') {
-    window.open('https://t.me/GizmoMDY1' + tgQuery, '_blank', 'noopener,noreferrer');
+    window.open('https://t.me/GizmoMDY1?text=' + encodeURIComponent(textMsg), '_blank', 'noopener,noreferrer');
   }
   closeMod('contact-modal');
 }
@@ -550,7 +563,6 @@ async function doTrack(){
     return; 
   }
 
-  // 🌐 အင်တာနက် ပိတ်ထားချိန် Track လုပ်မိပါက ချက်ချင်း သတိပေးရန်
   if (!navigator.onLine) {
     toast('အင်တာနက် ချိတ်ဆက်မှု မရှိပါ။ Data သို့မဟုတ် Wi-Fi ကို ဖွင့်ပါ။');
     return;
@@ -561,16 +573,14 @@ async function doTrack(){
   trackBtn.innerText = 'Searching...';
   trackBtn.disabled = true;
 
-try {
+  try {
     const API_URL = 'https://script.google.com/macros/s/AKfycbz659VRQoUdRfXIEg0denAkFZ-0bYjXIUl5Aoq7YFAXuhZXf4j7lr4Z1apDP8Bqckf_/exec';
     const response = await fetch(`${API_URL}?phone=${clean}`);
     
-    // HTTP Status Ok မဖြစ်ရင် Error တန်းပြရန် စစ်ဆေးခြင်း
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
-    // JSON အစစ်ဟုတ်မဟုတ် စစ်ဆေးပြီးမှ လက်ခံရန် (HTML Error Pages များကြောင့် Crash မဖြစ်စေရန်)
     const responseText = await response.text();
     let data;
     try {
@@ -578,12 +588,11 @@ try {
     } catch (e) {
       throw new Error('Server မှ Data ပုံစံမှားယွင်းနေပါသည်။');
     }
-    const rows = data.tracking || [];
+    
+    const rows = Array.isArray(data) ? data : (data?.tracking || []);
     
     if (!rows.length) { 
       toast('ပါဆယ်စာရင်း မတွေ့ရှိပါ။ ဖုန်းနံပါတ် မှားယွင်းနေနိုင်ပါသည်။'); 
-      trackBtn.innerText = originalText;
-      trackBtn.disabled = false;
       return; 
     }
 
@@ -648,11 +657,13 @@ try {
       </div>`;
     }).join('');
 
-    closeMod('track-modal');
-    setTimeout(() => openMod('result-modal'), 300);
+    // Track Modal ကို User က ကြိုပိတ်မသွားဘဲ ဖွင့်ထားဆဲဖြစ်မှသာ Result Modal ကို ပြပေးပါမည်
+    if (document.getElementById('track-modal').classList.contains('open')) {
+      closeMod('track-modal');
+      setTimeout(() => openMod('result-modal'), 300);
+    }
 
   } catch (error) {
-    // Server မှ ပေးပို့သော Error (သို့မဟုတ်) အင်တာနက် ချိတ်ဆက်မှု Error ကို ခွဲခြားပြသရန်
     const msg = error.message.includes('Server') ? error.message : 'ချိတ်ဆက်မှု ပြတ်တောက်သွားပါသည်။ ခေတ္တစောင့်ပြီး ပြန်စမ်းကြည့်ပါ။';
     toast(msg);
   } finally {
@@ -661,42 +672,35 @@ try {
   }
 }
 
+// PERFORMANCE OPTIMIZATION: Cached DOM Query on Scroll
 let isScrolling = false;
 window.addEventListener('scroll', () => {
   if (!isScrolling) {
     window.requestAnimationFrame(() => {
-      document.getElementById('fabUp').classList.toggle('show', window.scrollY > 280);
+      const btn = fabUpEl || document.getElementById('fabUp');
+      if (btn) btn.classList.toggle('show', window.scrollY > 280);
       isScrolling = false;
     });
     isScrolling = true;
   }
 }, { passive: true });
 
-// ဖုန်းဖြင့် စခရင်ကို စတင်ထိတွေ့လိုက်သည်နှင့် Keyboard ကို တစ်ကြိမ်တည်း ပိတ်ပေးရန် (Performance ပိုကောင်းစေရန်)
 window.addEventListener('touchstart', (e) => {
   const searchBar = document.getElementById('searchBar');
-  // Search Box ကိုယ်တိုင်ကို ထိနေတာမဟုတ်ရင် Keyboard ကို ပိတ်ပါမည်
   if (document.activeElement === searchBar && e.target !== searchBar) {
     searchBar.blur();
   }
 }, { passive: true });
 
-/* ──────────────────────────────────────────────
-   PWA Service Worker Registration
-────────────────────────────────────────────── */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js').then(reg => {
-      console.log('ServiceWorker registered successfully.');
-      
-      // Update အသစ်ရှိမရှိ စောင့်ကြည့်ခြင်း
       reg.addEventListener('updatefound', () => {
         const newWorker = reg.installing;
         newWorker.addEventListener('statechange', () => {
           if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-             // Update အသစ်ရပြီဖြစ်ကြောင်း User ကို အသိပေးခြင်း
-             toast('New update available!', true);
-             setTimeout(() => window.location.reload(), 2000);
+             // Auto-reload အစား User ကို Refresh လုပ်ရန်သာ အသိပေးပါမည်
+             toast('New update available! Refresh the page to apply.', true);
           }
         });
       });
