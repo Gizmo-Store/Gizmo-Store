@@ -657,15 +657,18 @@ async function doTrack(){
       </div>`;
     }).join('');
 
-    // 🌟 စောစောက ဆွဲကြည့်ထားသော Scroll နေရာဟောင်းတွင် ရပ်မနေစေရန် အပေါ်ဆုံးသို့ အတင်းပြန်တင်ပေးမည်
-    document.getElementById('parcels-wrap').scrollTop = 0;
-    const resModalCard = document.querySelector('#result-modal .modal-card');
-    if (resModalCard) resModalCard.scrollTop = 0;
-
     // Track Modal ကို User က ကြိုပိတ်မသွားဘဲ ဖွင့်ထားဆဲဖြစ်မှသာ Result Modal ကို ပြပေးပါမည်
     if (document.getElementById('track-modal').classList.contains('open')) {
       closeMod('track-modal');
-      setTimeout(() => openMod('result-modal'), 300);
+      
+      setTimeout(() => {
+        openMod('result-modal'); // Modal ကို အရင်ဖွင့်ပါမည်
+        
+        // 🌟 Modal ပွင့်လာပြီး (Render ဖြစ်ပြီး) မှသာ Scroll ကို အပေါ်ဆုံးသို့ တင်ပေးရပါမည်
+        document.getElementById('parcels-wrap').scrollTop = 0;
+        const resModalCard = document.querySelector('#result-modal .modal-card');
+        if (resModalCard) resModalCard.scrollTop = 0;
+      }, 300);
     }
 
   } catch (error) {
