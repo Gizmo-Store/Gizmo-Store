@@ -131,7 +131,7 @@
       background: var(--c-surf3); overflow: hidden; touch-action: pan-y; 
     }
     @media (min-width: 640px) { .main-slider { aspect-ratio: 21/9; } }
-    @media (min-width: 1024px) { .main-slider { aspect-ratio: 24/9; max-height: 480px; } }
+    @media (min-width: 1024px) { .main-slider { aspect-ratio: 1920 / 720; max-height: 720px; } }
     
     .slider-track {
       display: flex; width: 100%; height: 100%; will-change: transform;
