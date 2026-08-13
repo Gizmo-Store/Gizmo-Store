@@ -400,9 +400,9 @@ function renderGrid(appendOnly = false) {
       <div class="card-thumb">
         <img loading="lazy" decoding="async" src="${imgSrc}" alt="${title}" width="200" height="200"
           onerror="this.onerror=null; this.src='${fallbackImg}'"
-          onclick="viewImg(this.src)"
+          onclick="viewImg(this.src); setTimeout(() => toggleZoom({stopPropagation: () => {}}), 50);"
           role="button" tabindex="0" aria-label="Zoom image"
-          onkeydown="if(event.key==='Enter'||event.key===' ') viewImg(this.src)">
+          onkeydown="if(event.key==='Enter'||event.key===' ') { viewImg(this.src); setTimeout(() => toggleZoom({stopPropagation: () => {}}), 50); }">
       </div>
       <div class="card-body">
         <div class="card-brand">${esc(item.brand)}</div>
@@ -457,7 +457,6 @@ function clearSearch(){
   const searchInput = document.getElementById('searchBar');
   searchInput.value = '';
   document.getElementById('clearBtn').style.display = 'none';
-  searchInput.blur();
   
   const hero = document.getElementById('mainSlider');
   if (hero) hero.style.display = 'block'; 
