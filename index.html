@@ -205,8 +205,10 @@
 </div>
 
 <div id="img-modal" class="modal" onclick="closeMod('img-modal')">
-  <button type="button" class="modal-x" style="position: absolute; top: 20px; right: 20px; z-index: 10; background: var(--c-surface);" onclick="closeMod('img-modal')" aria-label="Close">&times;</button>
-  <img id="modal-img" src="" alt="Product" onclick="event.stopPropagation()">
+  <button type="button" class="img-close-btn" onclick="closeMod('img-modal')" aria-label="Close">&times;</button>
+  <div class="img-zoom-wrap" onclick="closeMod('img-modal')">
+    <img id="modal-img" src="" alt="Product" onclick="event.stopPropagation();">
+  </div>
 </div>
 
 <div id="details-modal" class="modal" onclick="closeMod('details-modal')">

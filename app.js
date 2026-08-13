@@ -400,9 +400,9 @@ function renderGrid(appendOnly = false) {
       <div class="card-thumb">
         <img loading="lazy" decoding="async" src="${imgSrc}" alt="${title}" width="200" height="200"
           onerror="this.onerror=null; this.src='${fallbackImg}'"
-          onclick="viewImg(this.src); setTimeout(() => toggleZoom({stopPropagation: () => {}}), 50);"
+          onclick="viewImg(this.src)"
           role="button" tabindex="0" aria-label="Zoom image"
-          onkeydown="if(event.key==='Enter'||event.key===' ') { viewImg(this.src); setTimeout(() => toggleZoom({stopPropagation: () => {}}), 50); }">
+          onkeydown="if(event.key==='Enter'||event.key===' ') viewImg(this.src)">
       </div>
       <div class="card-body">
         <div class="card-brand">${esc(item.brand)}</div>
@@ -524,9 +524,32 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+let isZoomed = false;
+
 function viewImg(src){
-  document.getElementById('modal-img').src = src;
+  isZoomed = false; 
+  const imgEl = document.getElementById('modal-img');
+  imgEl.src = src;
+  imgEl.style.maxWidth = '90vw';
+  imgEl.style.maxHeight = '82vh';
+  imgEl.style.cursor = 'zoom-in';
   openMod('img-modal');
+}
+
+function toggleZoom(e){
+  e.stopPropagation(); 
+  isZoomed = !isZoomed;
+  const img = document.getElementById('modal-img');
+  
+  if (isZoomed) {
+    img.style.maxWidth = '200vw'; 
+    img.style.maxHeight = '200vh';
+    img.style.cursor = 'zoom-out';
+  } else {
+    img.style.maxWidth = '90vw'; 
+    img.style.maxHeight = '82vh';
+    img.style.cursor = 'zoom-in';
+  }
 }
 
 function viewDetails(cardEl){
