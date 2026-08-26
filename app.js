@@ -241,7 +241,7 @@ function sortObjectKeys(obj) {
 }
 
 async function fetchProducts() {
-  const cache = localStorage.getItem('gz_cache_v2');
+  const cache = localStorage.getItem('gz_cache_v3');
   let hasOldData = false;
   let cachedProductsStr = "";
   let cachedSlidersStr = "";
@@ -322,7 +322,7 @@ async function fetchProducts() {
       // ၃။ သေချာစွာ နှိုင်းယှဉ်ခြင်း
       if (newProductsStr !== cachedProductsStr || newSlidersStr !== cachedSlidersStr) {
         console.log("Data အသစ်တွေ့ရှိပါသည်။ UI ကို Refresh လုပ်ပါမည်။");
-        localStorage.setItem('gz_cache_v2', JSON.stringify({
+        localStorage.setItem('gz_cache_v3', JSON.stringify({
           timestamp: Date.now(),
           products: newProducts,
           sliders: newSliders
@@ -335,7 +335,7 @@ async function fetchProducts() {
         renderInitialData(); 
       } else {
         console.log("အဟောင်းနှင့် အသစ် တူညီနေပါသည်။ Refresh လုပ်မည်မဟုတ်ပါ။");
-        localStorage.setItem('gz_cache_v2', JSON.stringify({
+        localStorage.setItem('gz_cache_v3', JSON.stringify({
           timestamp: Date.now(),
           products: newProducts,
           sliders: newSliders
