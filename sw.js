@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gizmo-app-v3';
+const CACHE_NAME = 'gizmo-app-v5';
 const urlsToCache = [
   './',
   'index.html',

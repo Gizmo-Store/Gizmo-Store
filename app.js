@@ -247,7 +247,7 @@ function sortObjectKeys(obj) {
 }
 
 async function fetchProducts() {
-  const cache = localStorage.getItem('gz_cache_v3');
+  const cache = localStorage.getItem('gz_cache_v5');
   let hasOldData = false;
   let cachedProductsStr = "";
   let cachedSlidersStr = "";
@@ -314,7 +314,22 @@ async function fetchProducts() {
     const prodSnapshot = await getDocs(collection(db, "products"));
     const newProducts = [];
     prodSnapshot.forEach((doc) => { newProducts.push(doc.data()); });
-    newProducts.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+    
+    // 🌟 Order နံပါတ်ကို ဦးစားပေးမည် > ထို့နောက် နောက်ဆုံးတင်သောပစ္စည်း (createdAt) > ထို့နောက် A-Z
+    newProducts.sort((a, b) => {
+      const orderA = a.order !== undefined ? Number(a.order) : 99999;
+      const orderB = b.order !== undefined ? Number(b.order) : 99999;
+      if (orderA !== orderB) return orderA - orderB;
+
+      // အချိန် (Timestamp) ကို ဖတ်၍ အသစ်ကို အပေါ်တင်မည်
+      const getTime = (t) => t ? (t.seconds ? t.seconds * 1000 : new Date(t).getTime() || 0) : 0;
+      const timeA = getTime(a.createdAt);
+      const timeB = getTime(b.createdAt);
+      
+      if (timeA !== timeB) return timeB - timeA;
+
+      return (a.title || '').localeCompare(b.title || '');
+    });
 
     const sliderSnapshot = await getDocs(collection(db, "sliders"));
     const newSliders = [];
@@ -328,7 +343,7 @@ async function fetchProducts() {
       // ၃။ သေချာစွာ နှိုင်းယှဉ်ခြင်း (စျေးနှုန်း/ပစ္စည်း အသစ်ရှိမှသာ Refresh လုပ်မည်)
       if (newProductsStr !== cachedProductsStr || newSlidersStr !== cachedSlidersStr) {
         console.log("Data အသစ်တွေ့ရှိပါသည်။ UI ကို Refresh လုပ်ပါမည်။");
-        localStorage.setItem('gz_cache_v3', JSON.stringify({
+        localStorage.setItem('gz_cache_v5', JSON.stringify({
           timestamp: Date.now(),
           products: newProducts,
           sliders: newSliders
@@ -342,7 +357,7 @@ async function fetchProducts() {
       } else {
         console.log("အဟောင်းနှင့် အသစ် တူညီနေပါသည်။ Refresh လုပ်မည်မဟုတ်ပါ။");
         // တူညီနေလျှင် UI ကို ပြန်မဆွဲပါ။ ၃ မိနစ် Timer ကိုသာ အသစ်ပြန်မှတ်ပေးပါမည်။
-        localStorage.setItem('gz_cache_v3', JSON.stringify({
+        localStorage.setItem('gz_cache_v5', JSON.stringify({
           timestamp: Date.now(),
           products: newProducts,
           sliders: newSliders
