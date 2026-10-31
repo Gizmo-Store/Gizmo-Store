@@ -8,13 +8,13 @@
   "theme_color": "#0C0F14",
   "icons": [
     {
-      "src": "https://res.cloudinary.com/dfuyt9ycz/image/upload/v1782978015/Done_jpg_logo_jnvpf5.jpg",
+      "src": "https://ik.imagekit.io/pbxb591q4z/Gizmo%20website/Done%20jpg%20logo.jpg",
       "sizes": "192x192",
       "type": "image/jpeg",
       "purpose": "any"
     },
     {
-      "src": "https://res.cloudinary.com/dfuyt9ycz/image/upload/v1782978015/Done_jpg_logo_jnvpf5.jpg",
+      "src": "https://ik.imagekit.io/pbxb591q4z/Gizmo%20website/Done%20jpg%20logo.jpg",
       "sizes": "512x512",
       "type": "image/jpeg",
       "purpose": "maskable"
