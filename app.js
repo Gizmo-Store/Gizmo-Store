@@ -706,9 +706,9 @@ async function doTrack(){
       const step = parseInt(statusRaw.substring(1)) || 1;
       
       const lbl = type === 's' ? 'Singapore' : type === 'c' ? 'China' : 'Thailand';
-      const originFlag = type === 's' ? 'https://i.ibb.co/pj2H93Mh/Singapore.png' 
-                       : type === 'c' ? 'https://i.ibb.co/9HPFdxVC/Flag-China.webp' 
-                       : 'https://i.ibb.co/DPgNbPkW/Thailand.jpg';
+      const originFlag = type === 's' ? 'https://ik.imagekit.io/pbxb591q4z/FLAG/Singapore.png' 
+                       : type === 'c' ? 'https://ik.imagekit.io/pbxb591q4z/FLAG/China.jpg' 
+                       : 'https://ik.imagekit.io/pbxb591q4z/FLAG/thiland.png';
 
       const dot = (n) => {
         const cls = (n >= 4 && step >= 4) ? 'f' : (step === n) ? 'a' : (step > n) ? 'd' : '';
@@ -738,7 +738,7 @@ async function doTrack(){
             <div class="tl-lbl">Warehouse</div>
           </div>
           <div class="tl-col">
-            <img class="tl-flag" src="https://i.ibb.co/xqF8WDR1/Myanmar.webp" alt="Myanmar" loading="lazy">
+            <img class="tl-flag" src="https://ik.imagekit.io/pbxb591q4z/FLAG/MYANMAR.png" alt="Myanmar" loading="lazy">
             <div class="tl-mid">${dot(3)}${line(3)}</div>
             <div class="tl-lbl">Myanmar</div>
           </div>
