@@ -733,7 +733,7 @@ async function doTrack(){
             <div class="tl-lbl">${esc(lbl)}</div>
           </div>
           <div class="tl-col">
-            <img class="tl-flag" src="https://res.cloudinary.com/dfuyt9ycz/image/upload/v1788254626/Watehouse_logo_hixgse.png" alt="Warehouse" loading="lazy">
+            <img class="tl-flag" src="https://ik.imagekit.io/pbxb591q4z/FLAG/Watehouse%20logo.png" alt="Warehouse" loading="lazy">
             <div class="tl-mid">${dot(2)}${line(2)}</div>
             <div class="tl-lbl">Warehouse</div>
           </div>
@@ -743,7 +743,7 @@ async function doTrack(){
             <div class="tl-lbl">Myanmar</div>
           </div>
           <div class="tl-col">
-            <img class="tl-flag" style="border-radius:5px" src="https://res.cloudinary.com/dfuyt9ycz/image/upload/v1782976146/For_website_kazlfd.png" alt="Gizmo" loading="lazy">
+            <img class="tl-flag" style="border-radius:5px" src="https://ik.imagekit.io/pbxb591q4z/Gizmo%20website/Done%20jpg%20logo.jpg?updatedAt=1793415869598" alt="Gizmo" loading="lazy">
             <div class="tl-mid">${dot(4)}</div>
             <div class="tl-lbl">Gizmo</div>
           </div>
