@@ -334,7 +334,14 @@ async function fetchProducts() {
     const sliderSnapshot = await getDocs(collection(db, "sliders"));
     const newSliders = [];
     sliderSnapshot.forEach((doc) => { newSliders.push(doc.data()); });
-    newSliders.sort((a, b) => (a.desktop || '').localeCompare(b.desktop || ''));
+    
+    // 🌟 နောက်ဆုံးထည့်ထားသောပုံကို အရင်ဆုံးပြရန် (createdAt ကို ဖတ်မည်)
+    newSliders.sort((a, b) => {
+      const getTime = (t) => t ? (t.seconds ? t.seconds * 1000 : new Date(t).getTime() || 0) : 0;
+      const timeA = getTime(a.createdAt);
+      const timeB = getTime(b.createdAt);
+      return timeB - timeA; // အသစ်ကို အပေါ်တင်မည်
+    });
     
     if (newProducts.length > 0) {
       const newProductsStr = JSON.stringify(sortObjectKeys(newProducts));
@@ -354,6 +361,11 @@ async function fetchProducts() {
           renderSliders(newSliders);
         }
         renderInitialData(); 
+        
+        // 🌟 Website ဖွင့်ထားရင်း နောက်ကွယ်ကနေ ပစ္စည်းသစ်ဝင်လာရင် အသိပေးမည့်စာသား
+        if (hasOldData) {
+          toast('Products and prices have been updated.', true);
+        }
       } else {
         console.log("အဟောင်းနှင့် အသစ် တူညီနေပါသည်။ Refresh လုပ်မည်မဟုတ်ပါ။");
         // တူညီနေလျှင် UI ကို ပြန်မဆွဲပါ။ ၃ မိနစ် Timer ကိုသာ အသစ်ပြန်မှတ်ပေးပါမည်။
